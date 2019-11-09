@@ -24,7 +24,7 @@ export default [
     Routes: ['src/pages/Authorized'],
     routes: [
       // Entrustment
-      { path: '/', redirect: '/Entrustment/ApplicationForEntrustment',authority: ['admin', 'user']},
+      { path: '/', redirect: '/Archives/ArchivesAdd',authority: ['admin', 'user']},
 
 
       //Archives
