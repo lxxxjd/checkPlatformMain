@@ -1,7 +1,7 @@
 import {} from '@/services/cargo';
 
 export default {
-  namespace: 'cnas',
+  namespace: 'cargo',
   state: {
     // data: [],
   },
