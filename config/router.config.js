@@ -51,6 +51,22 @@ export default [
 
         ],
       },
+      //Archives
+      {
+        path: '/Cargo',
+        icon: 'profile',
+        name: 'Cargo',
+        routes: [
+          {
+            path: '/Cargo/CargoList',
+            name: 'CargoList',
+            component: './Cargo/CargoList',
+          },
+
+        ],
+      },
+
+
 
       {
         component: '404',
