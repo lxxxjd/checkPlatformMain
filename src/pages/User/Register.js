@@ -82,7 +82,7 @@ class Register extends Component {
 
   getPasswordStatus = () => {
     const { form } = this.props;
-    const value = form.getFieldValue('password');
+    const value = form.getFieldValue('prepassword');
     if (value && value.length > 9) {
       return 'ok';
     }
@@ -95,6 +95,7 @@ class Register extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { form, dispatch } = this.props;
+    console.log("test")
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
         const { prefix } = this.state;
@@ -117,12 +118,34 @@ class Register extends Component {
 
   checkConfirm = (rule, value, callback) => {
     const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
+    if (value && value !== form.getFieldValue('prepassword')) {
       callback(formatMessage({ id: 'validation.password.twice' }));
     } else {
       callback();
     }
   };
+
+  checkUsername = (rule, value,callback) => {
+
+    console.log(value);
+    const { dispatch } = this.props;
+    if (value!==undefined || value!=="") {
+      const params={username:value};
+      dispatch({
+        type: 'register/checkUserName',
+        payload:params,
+        callback: (response) => {
+          if(response){
+            if(response ==="success"){
+              callback();
+            }else{
+              callback(formatMessage({ id: 'username is repeated' }));
+            }
+          }
+        }
+      });
+    }
+  }
 
   checkPassword = (rule, value, callback) => {
     const { visible, confirmDirty } = this.state;
@@ -146,7 +169,7 @@ class Register extends Component {
       } else {
         const { form } = this.props;
         if (value && confirmDirty) {
-          form.validateFields(['confirm'], { force: true });
+          form.validateFields(['password'], { force: true });
         }
         callback();
       }
@@ -161,7 +184,7 @@ class Register extends Component {
 
   renderPasswordProgress = () => {
     const { form } = this.props;
-    const value = form.getFieldValue('password');
+    const value = form.getFieldValue('prepassword');
     const passwordStatus = this.getPasswordStatus();
     return value && value.length ? (
       <div className={styles[`progress-${passwordStatus}`]}>
@@ -182,111 +205,182 @@ class Register extends Component {
     const { count, prefix, help, visible } = this.state;
     return (
       <div className={styles.main}>
-        <h3>
-          <FormattedMessage id="app.register.register" />
-        </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
-            {getFieldDecorator('mail', {
-              rules: [
-                {
-                  required: true,
-                  message: formatMessage({ id: 'validation.email.required' }),
-                },
-                {
-                  type: 'email',
-                  message: formatMessage({ id: 'validation.email.wrong-format' }),
-                },
-              ],
-            })(
-              <Input size="large" placeholder={formatMessage({ id: 'form.email.placeholder' })} />
-            )}
-          </FormItem>
-          <FormItem help={help}>
-            <Popover
-              getPopupContainer={node => node.parentNode}
-              content={
-                <div style={{ padding: '4px 0' }}>
-                  {passwordStatusMap[this.getPasswordStatus()]}
-                  {this.renderPasswordProgress()}
-                  <div style={{ marginTop: 10 }}>
-                    <FormattedMessage id="validation.password.strength.msg" />
-                  </div>
-                </div>
-              }
-              overlayStyle={{ width: 240 }}
-              placement="right"
-              visible={visible}
-            >
-              {getFieldDecorator('password', {
-                rules: [
-                  {
-                    validator: this.checkPassword,
-                  },
-                ],
-              })(
-                <Input
-                  size="large"
-                  type="password"
-                  placeholder={formatMessage({ id: 'form.password.placeholder' })}
-                />
-              )}
-            </Popover>
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('confirm', {
-              rules: [
-                {
-                  required: true,
-                  message: formatMessage({ id: 'validation.confirm-password.required' }),
-                },
-                {
-                  validator: this.checkConfirm,
-                },
-              ],
-            })(
-              <Input
-                size="large"
-                type="password"
-                placeholder={formatMessage({ id: 'form.confirm-password.placeholder' })}
-              />
-            )}
-          </FormItem>
-          <FormItem>
-            <InputGroup compact>
-              <Select
-                size="large"
-                value={prefix}
-                onChange={this.changePrefix}
-                style={{ width: '20%' }}
-              >
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-              </Select>
-              {getFieldDecorator('mobile', {
+            <Row gutter={4}>
+              <Col span={6}>公司名：</Col>
+              <Col span={18}>
+                {getFieldDecorator('company', {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'validation.phone-number.required' }),
-                  },
-                  {
-                    pattern: /^\d{11}$/,
-                    message: formatMessage({ id: 'validation.phone-number.wrong-format' }),
+                    message:"请输入正确的公司",
                   },
                 ],
               })(
-                <Input
-                  size="large"
-                  style={{ width: '80%' }}
-                  placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
-                />
+                <Input size="large" placeholder="请输入正确的公司名" />
               )}
-            </InputGroup>
+              </Col>
+            </Row>
           </FormItem>
           <FormItem>
-            <Row gutter={8}>
-              <Col span={16}>
-                {getFieldDecorator('captcha', {
+            <Row gutter={4}>
+              <Col span={6}>证书编号头：</Col>
+              <Col span={18}>
+                {getFieldDecorator('certcode', {
+                  rules: [
+                    {
+                      required: true,
+                      message: "请输入CertCode",
+                    },
+                  ],
+                })(
+                  <Input
+                    size="large"
+                    placeholder="请输入CertCode"
+                  />
+                )}
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem>
+            <Row gutter={4}>
+              <Col span={6}>用户名：</Col>
+              <Col span={18}>
+                {getFieldDecorator('username', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'username is repeated' }),
+                    },
+                    {
+                      validator:this.checkUsername,
+                    }
+                  ],
+                })(
+                  <Input
+                    size="large"
+                    placeholder="请输入用户名"
+                  />
+                )}
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem help={help}>
+            <Row gutter={4}>
+              <Col span={6}>注册密码：</Col>
+              <Col span={18}>
+                <Popover
+                  getPopupContainer={node => node.parentNode}
+                  content={
+                    <div style={{ padding: '4px 0' }}>
+                      {passwordStatusMap[this.getPasswordStatus()]}
+                      {this.renderPasswordProgress()}
+                      <div style={{ marginTop: 10 }}>
+                        <FormattedMessage id="validation.password.strength.msg" />
+                      </div>
+                    </div>
+                  }
+                  overlayStyle={{ width: 240 }}
+                  placement="right"
+                  visible={visible}
+                >
+                  {getFieldDecorator('prepassword', {
+                    rules: [
+                      {
+                        required: true,
+                        message:"请输入密码",
+                      },
+                      {
+                        validator: this.checkPassword,
+                      },
+                    ],
+                  })(
+                    <Input
+                      size="large"
+                      type="password"
+                      placeholder={formatMessage({ id: 'form.password.placeholder' })}
+                    />
+                  )}
+                </Popover>
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem>
+            <Row gutter={4}>
+              <Col span={6}>重输密码：</Col>
+              <Col span={18}>
+                {getFieldDecorator('password', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'validation.confirm-password.required' }),
+                    },
+                    {
+                      validator: this.checkConfirm,
+                    },
+                  ],
+                })(
+                  <Input
+                    size="large"
+                    type="password"
+                    placeholder={formatMessage({ id: 'form.confirm-password.placeholder' })}
+                  />
+                )}
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem>
+            <Row gutter={4}>
+              <Col span={6}>联系人：</Col>
+              <Col span={18}>
+                {getFieldDecorator('contact', {
+                  rules: [
+                    {
+                      required: true,
+                      message: "请输入联系人",
+                    },
+                  ],
+                })(
+                  <Input
+                    size="large"
+                    placeholder="请输入联系人"
+                  />
+                )}
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem>
+            <Row gutter={4}>
+              <Col span={6}>手机号码：</Col>
+              <Col span={18}>
+                <InputGroup compact>
+                  {getFieldDecorator('tel', {
+                    rules: [
+                      {
+                        required: true,
+                        message: formatMessage({ id: 'validation.phone-number.required' }),
+                      },
+                      {
+                        pattern: /^\d{11}$/,
+                        message: formatMessage({ id: 'validation.phone-number.wrong-format' }),
+                      },
+                    ],
+                  })(
+                    <Input
+                      size="large"
+                      placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
+                    />
+                  )}
+                </InputGroup>
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem>
+            <Row gutter={4}>
+              <Col span={6}>验证码：</Col>
+              <Col span={10}>
+                {getFieldDecorator('veritycode', {
                   rules: [
                     {
                       required: true,
