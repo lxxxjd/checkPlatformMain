@@ -13,7 +13,8 @@ export default {
   'app.register.register': 'Register',
   'app.register.get-verification-code': 'Get code',
   'app.login.verification-code-warning':
-    'This project is a demo project and will not actually send you a verification code. Please switch to the account password login interface and log in as prompted.',
+    'The verification-code has been send ',
+  'app.login.verification-code-warning.noExist':'tel is not right',
   'app.register.sign-in': 'Already have an account?',
   'app.register-result.msg': 'Account：registered at {email}',
   'app.register-result.activation-email':
@@ -38,4 +39,11 @@ export default {
   'validation.date.required': 'Please select the start and end date',
   'validation.goal.required': 'Please enter a description of the goal',
   'validation.standard.required': 'Please enter a metric',
+  'validation.company.required':'Please enter a company',
+  'validation.certcode.required':'Please enter a certcode',
+  'validation.username.required':'Please enter a username',
+  'validation.contact.required':'Please enter a contact',
+  'validation.userExist.repeated':'username is repeated',
+  'validation.userExist.error':'error',
+
 };

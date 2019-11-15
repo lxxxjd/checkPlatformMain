@@ -13,7 +13,8 @@ export default {
   'app.register.register': '注册',
   'app.register.get-verification-code': '获取验证码',
   'app.login.verification-code-warning':
-    '此项目为演示项目，并不会真的给您发送验证码。请切换到账户密码登录界面按提示登录。',
+    '验证码已发送到您手机上，注意查收',
+  'app.login.verification-code-warning.noExist':'手机未正确填写或错误',
   'app.register.sign-in': '使用已有账户登录',
   'app.register-result.msg': '你的账户：{email} 注册成功',
   'app.register-result.activation-email':
@@ -37,5 +38,11 @@ export default {
   'validation.date.required': '请选择起止日期',
   'validation.goal.required': '请输入目标描述',
   'validation.standard.required': '请输入衡量标准',
-  'username is repeated':"用户名已存在"
+  'username is repeated':"用户名已存在",
+  'validation.company.required':'请输入公司名',
+  'validation.certcode.required':'请输入certCode',
+  'validation.username.required':'请输入一个用户名',
+  'validation.contact.required':'请输入一个联系人',
+  'validation.userExist.repeated':'用户名重复',
+  'validation.userExist.error':'检测用户名错误，联系管理员',
 };

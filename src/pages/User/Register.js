@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
 import router from 'umi/router';
-import { Form, Input, Button, Modal, Select, Row, Col, Popover, Progress } from 'antd';
+import { Form, Input, Button, Modal, Select, Row, Col, Popover, Progress,message } from 'antd';
 import styles from './Register.less';
 
 const FormItem = Form.Item;
@@ -48,6 +48,7 @@ class Register extends Component {
     prefix: '86',
   };
 
+
   componentDidUpdate() {
     const { form, register } = this.props;
     const account = form.getFieldValue('mail');
@@ -75,14 +76,36 @@ class Register extends Component {
         clearInterval(this.interval);
       }
     }, 1000);
-    Modal.info({
-      title: formatMessage({ id: 'app.login.verification-code-warning' }),
-    });
+    const { form,dispatch} = this.props;
+    const tel = form.getFieldValue("mobile");
+    // 判断电话是否未空
+    if(tel===undefined){
+      message.success("电话号码不能为空");
+    }else{
+      // 存在电话号码
+      dispatch({
+        type: 'register/sendVerify',
+        payload:{tel},
+        callback: (response) => {
+          if(response){
+            // 请求服务成功
+            if(response === "success"){
+                message.success("发送成功");
+            }else{
+              // 失败
+              Modal.info({
+                title: formatMessage({ id: 'app.login.verification-code-warning.noExist' }),
+              });
+            }
+          }
+        }
+      });
+    }
   };
 
   getPasswordStatus = () => {
     const { form } = this.props;
-    const value = form.getFieldValue('prepassword');
+    const value = form.getFieldValue('password');
     if (value && value.length > 9) {
       return 'ok';
     }
@@ -95,18 +118,38 @@ class Register extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { form, dispatch } = this.props;
-    console.log("test")
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
-        const { prefix } = this.state;
+        // 1. 验证验证码
+        const tel = values.mobile;
+        const verifyCode = values.captcha;
+        const params={
+          tel,
+          verifyCode
+        }
         dispatch({
-          type: 'register/submit',
-          payload: {
-            ...values,
-            prefix,
-          },
+          type: 'register/verifyTel',
+          payload:params,
+          callback: (response) => {
+            console.log(response);
+            if(response){
+              // 请求服务成功
+              console.log(response);
+              if(response === "success"){
+                message.success("验证码正确");
+                // 注册逻辑
+
+              }else{
+                // 失败
+                message.success(response);
+              }
+            }else{
+              message.success("服务器错误");
+            }
+          }
         });
-      }
+
+        }
     });
   };
 
@@ -118,34 +161,30 @@ class Register extends Component {
 
   checkConfirm = (rule, value, callback) => {
     const { form } = this.props;
-    if (value && value !== form.getFieldValue('prepassword')) {
+    if (value && value !== form.getFieldValue('password')) {
       callback(formatMessage({ id: 'validation.password.twice' }));
     } else {
       callback();
     }
   };
 
-  checkUsername = (rule, value,callback) => {
-
-    console.log(value);
+  checkUserName = (rule, value, callback) => {
     const { dispatch } = this.props;
-    if (value!==undefined || value!=="") {
-      const params={username:value};
-      dispatch({
-        type: 'register/checkUserName',
-        payload:params,
-        callback: (response) => {
-          if(response){
-            if(response ==="success"){
-              callback();
-            }else{
-              callback(formatMessage({ id: 'username is repeated' }));
-            }
-          }
+    dispatch({
+      type: 'register/checkUserNameFetch',
+      payload:{username:value},
+      callback: (response) => {
+        if (response===undefined || response === "error") {
+          callback(formatMessage({ id: 'validation.userExist.error' }));
+        } else if(response === "repeat"){
+          callback(formatMessage({ id: 'validation.userExist.repeated' }));
+        }else{
+          callback();
         }
-      });
-    }
-  }
+      }
+    });
+  };
+
 
   checkPassword = (rule, value, callback) => {
     const { visible, confirmDirty } = this.state;
@@ -169,7 +208,7 @@ class Register extends Component {
       } else {
         const { form } = this.props;
         if (value && confirmDirty) {
-          form.validateFields(['password'], { force: true });
+          form.validateFields(['confirm'], { force: true });
         }
         callback();
       }
@@ -184,7 +223,7 @@ class Register extends Component {
 
   renderPasswordProgress = () => {
     const { form } = this.props;
-    const value = form.getFieldValue('prepassword');
+    const value = form.getFieldValue('password');
     const passwordStatus = this.getPasswordStatus();
     return value && value.length ? (
       <div className={styles[`progress-${passwordStatus}`]}>
@@ -205,71 +244,68 @@ class Register extends Component {
     const { count, prefix, help, visible } = this.state;
     return (
       <div className={styles.main}>
+        <h3>
+          <FormattedMessage id="app.register.register" />
+        </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             <Row gutter={4}>
-              <Col span={6}>公司名：</Col>
-              <Col span={18}>
+              <Col span={5}><div>公司名：</div></Col>
+              <Col span={19}>
                 {getFieldDecorator('company', {
-                rules: [
-                  {
-                    required: true,
-                    message:"请输入正确的公司",
-                  },
-                ],
-              })(
-                <Input size="large" placeholder="请输入正确的公司名" />
-              )}
-              </Col>
-            </Row>
-          </FormItem>
-          <FormItem>
-            <Row gutter={4}>
-              <Col span={6}>证书编号头：</Col>
-              <Col span={18}>
-                {getFieldDecorator('certcode', {
                   rules: [
                     {
                       required: true,
-                      message: "请输入CertCode",
+                      message: formatMessage({ id: 'validation.company.required' }),
                     },
                   ],
                 })(
-                  <Input
-                    size="large"
-                    placeholder="请输入CertCode"
-                  />
+                  <Input size="large" placeholder={formatMessage({ id: 'form.company.placeholder' })} />
                 )}
               </Col>
             </Row>
           </FormItem>
           <FormItem>
             <Row gutter={4}>
-              <Col span={6}>用户名：</Col>
-              <Col span={18}>
+              <Col span={5}><div>Certcode：</div></Col>
+              <Col span={19}>
+                {getFieldDecorator('certcode', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'validation.certcode.required' }),
+                    },
+                  ],
+                })(
+                  <Input size="large" placeholder={formatMessage({ id: 'form.certcode.placeholder' })} />
+                )}
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem>
+            <Row gutter={4}>
+              <Col span={5}><div>用户名：</div></Col>
+              <Col span={19}>
                 {getFieldDecorator('username', {
                   rules: [
                     {
                       required: true,
-                      message: formatMessage({ id: 'username is repeated' }),
+                      message: formatMessage({ id: 'validation.username.required' }),
                     },
                     {
-                      validator:this.checkUsername,
-                    }
+                      validator: this.checkUserName,
+                    },
                   ],
                 })(
-                  <Input
-                    size="large"
-                    placeholder="请输入用户名"
-                  />
+                  <Input size="large" placeholder={formatMessage({ id: 'form.username.placeholder' })} />
                 )}
               </Col>
             </Row>
           </FormItem>
           <FormItem help={help}>
             <Row gutter={4}>
-              <Col span={6}>注册密码：</Col>
-              <Col span={18}>
+              <Col span={5}><div>输入密码：</div></Col>
+              <Col span={19}>
                 <Popover
                   getPopupContainer={node => node.parentNode}
                   content={
@@ -285,12 +321,8 @@ class Register extends Component {
                   placement="right"
                   visible={visible}
                 >
-                  {getFieldDecorator('prepassword', {
+                  {getFieldDecorator('password', {
                     rules: [
-                      {
-                        required: true,
-                        message:"请输入密码",
-                      },
                       {
                         validator: this.checkPassword,
                       },
@@ -308,9 +340,9 @@ class Register extends Component {
           </FormItem>
           <FormItem>
             <Row gutter={4}>
-              <Col span={6}>重输密码：</Col>
-              <Col span={18}>
-                {getFieldDecorator('password', {
+              <Col span={5}><div>确认密码：</div></Col>
+              <Col span={19}>
+                {getFieldDecorator('confirm', {
                   rules: [
                     {
                       required: true,
@@ -332,30 +364,35 @@ class Register extends Component {
           </FormItem>
           <FormItem>
             <Row gutter={4}>
-              <Col span={6}>联系人：</Col>
-              <Col span={18}>
+              <Col span={5}><div>联系人：</div></Col>
+              <Col span={19}>
                 {getFieldDecorator('contact', {
                   rules: [
                     {
                       required: true,
-                      message: "请输入联系人",
+                      message: formatMessage({ id: 'validation.contact.required' }),
                     },
                   ],
                 })(
-                  <Input
-                    size="large"
-                    placeholder="请输入联系人"
-                  />
+                  <Input size="large" placeholder={formatMessage({ id: 'form.contact.placeholder' })} />
                 )}
               </Col>
             </Row>
           </FormItem>
           <FormItem>
             <Row gutter={4}>
-              <Col span={6}>手机号码：</Col>
-              <Col span={18}>
+              <Col span={5}><div>手机号码：</div></Col>
+              <Col span={19}>
                 <InputGroup compact>
-                  {getFieldDecorator('tel', {
+                  <Select
+                    size="large"
+                    value={prefix}
+                    onChange={this.changePrefix}
+                    style={{ width: '25%' }}
+                  >
+                    <Option value="86">+86</Option>
+                  </Select>
+                  {getFieldDecorator('mobile', {
                     rules: [
                       {
                         required: true,
@@ -369,6 +406,7 @@ class Register extends Component {
                   })(
                     <Input
                       size="large"
+                      style={{ width: '75%' }}
                       placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
                     />
                   )}
@@ -378,9 +416,9 @@ class Register extends Component {
           </FormItem>
           <FormItem>
             <Row gutter={4}>
-              <Col span={6}>验证码：</Col>
-              <Col span={10}>
-                {getFieldDecorator('veritycode', {
+              <Col span={5}><div>验证码：</div></Col>
+              <Col span={11}>
+                {getFieldDecorator('captcha', {
                   rules: [
                     {
                       required: true,
