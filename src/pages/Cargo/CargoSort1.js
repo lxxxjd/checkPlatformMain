@@ -37,22 +37,22 @@ const CreateForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="用户修改"
+      title="货物类别修改"
       style={{ top: 100 }}
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用户名">
-        {form.getFieldDecorator('userName', {
-          initialValue: modalInfo.userName,
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="货物类别名称">
+        {form.getFieldDecorator('sort1', {
+          initialValue: modalInfo.sort1,
           rules: [
             {
               required: true,
-              message: "请输入不重复的用户名",
+              message: "请输入货物类别名称",
             },
           ],
-        })(<Input placeholder="请输入用户名" />)}
+        })(<Input placeholder="请输入货物类别名称" />)}
       </FormItem>
 
     </Modal>
@@ -73,22 +73,22 @@ const AddForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="用户修改"
+      title="货物类别修改"
       style={{ top: 100 }}
       visible={addModalVisible}
       onOk={okHandle}
       onCancel={() => addHandleModalVisible()}
     >
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用户名">
-        {form.getFieldDecorator('userName', {
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="货物类别名称">
+        {form.getFieldDecorator('sort1', {
           rules: [
             {
               required: true,
-              message: "请输入不重复的用户名",
+              message: "请输入货物类别名称",
             },
           ],
-        })(<Input placeholder="请输入用户名" />)}
+        })(<Input placeholder="请输入货物类别名称" />)}
       </FormItem>
 
     </Modal>
@@ -96,12 +96,12 @@ const AddForm = Form.create()(props => {
 });
 
 
-@connect(({ company, loading }) => ({
-  company,
-  loading: loading.models.company,
+@connect(({ cargo, loading }) => ({
+  cargo,
+  loading: loading.models.cargo,
 }))
 @Form.create()
-class CargoList extends PureComponent {
+class CargoSort1 extends PureComponent {
   state = {
     modalVisible: false,
     addModalVisible:false,
@@ -127,23 +127,14 @@ class CargoList extends PureComponent {
     },
   ];
 
-
-
-
   componentDidMount() {
     this.init();
   }
 
   init =()=>{
-    const user = JSON.parse(localStorage.getItem("userinfo"));
     const { dispatch } = this.props;
-    const params = {
-      certCode:user.certCode,
-      value:"",
-    };
     dispatch({
-      type: 'cargo/searchCargos',
-      payload: params,
+      type: 'cargo/getCargosort1List',
       callback: (response) => {
         if (response){
           this.state.dataSource = response.data;
@@ -199,21 +190,21 @@ class CargoList extends PureComponent {
   deleteItem = text =>{
     const { dispatch } = this.props;
     const values = {
-      userName:text.userName,
+      sort1:text.sort1,
     };
-    console.log(values);
     dispatch({
-      type: 'company/deleteUser',
+      type: 'cargo/deleteCargosort1',
       payload:values,
       callback: (response) => {
-        if(response==="success")
+        if(response==="success"){
           message.success("删除成功");
-        else{
+          this.init();
+        } else{
           message.success("删除失败");
         }
       }
     });
-    this.init();
+
   }
 
 
@@ -239,24 +230,19 @@ class CargoList extends PureComponent {
   handleEdit = (fields,modalInfo) => {
     const { dispatch } = this.props;
     let prams = modalInfo;
-    prams.userName =  fields.userName;
-    prams.password =  fields.password;
-    prams.nameC =  fields.nameC;
-    prams.place =  fields.place;
-    prams.tel =  fields.tel;
-    prams.section =  fields.section;
-    prams.role =  fields.role;
+    prams.sort1 =  fields.sort1;
     const values = {
       ...prams,
     };
     dispatch({
-      type: 'company/updateUser',
+      type: 'cargo/updateCargoSort1',
       payload:values,
       callback: (response) => {
-        if(response==="success")
-          message.success("保存成功");
-        else{
-          message.success("保存失败");
+        if(response==="success"){
+          message.success("修改成功");
+          this.init();
+        } else{
+          message.success("修改失败");
         }
       }
     });
@@ -267,18 +253,17 @@ class CargoList extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const user = JSON.parse(localStorage.getItem("userinfo"));
     const values = {
       ...fields,
-      certCode:user.certCode,
     };
     dispatch({
-      type: 'company/addUser',
+      type: 'cargo/addCargoSort1',
       payload:values,
       callback: (response) => {
-        if(response==="success")
+        if(response==="success"){
           message.success("保存成功");
-        else{
+          this.init();
+        } else{
           message.success("保存失败");
         }
       }
@@ -286,7 +271,6 @@ class CargoList extends PureComponent {
     this.setState({
       addModalVisible: false,
     });
-    this.init();
   }
 
 
@@ -369,7 +353,7 @@ class CargoList extends PureComponent {
               loading={loading}
               dataSource={dataSource}
               columns={this.columns}
-              rowKey="userName"
+              rowKey="sort1"
               pagination={{showQuickJumper:true,showSizeChanger:true}}
             />
           </div>
@@ -379,4 +363,4 @@ class CargoList extends PureComponent {
   }
 }
 
-export default CargoList;
+export default CargoSort1;

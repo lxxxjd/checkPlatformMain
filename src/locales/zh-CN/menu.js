@@ -10,6 +10,7 @@ export default {
   'menu.Archives.ArchivesDestory':'退档',
   'menu.Archives.ArchivesQuery':'查档',
   'menu.Cargo.CargoList':'货物字典',
+  'menu.Cargo.CargoSort1':'货物一级分类',
   'menu.Cargo':'货物管理',
 
   'menu.dashboard': 'Dashboard',

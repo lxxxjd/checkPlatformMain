@@ -57,10 +57,16 @@ export default [
         icon: 'profile',
         name: 'Cargo',
         routes: [
+          // {
+          //   path: '/Cargo/CargoList',
+          //   name: 'CargoList',
+          //   component: './Cargo/CargoList',
+          // },
+
           {
-            path: '/Cargo/CargoList',
-            name: 'CargoList',
-            component: './Cargo/CargoList',
+            path: '/Cargo/CargoSort1',
+            name: 'CargoSort1',
+            component: './Cargo/CargoSort1',
           },
 
         ],
