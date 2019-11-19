@@ -120,8 +120,6 @@ class CargoSort1 extends PureComponent {
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.deleteItem(text, record)}>删除</a>
-          &nbsp;&nbsp;
-          <a onClick={() => this.goToCargoSort2(text, record)}>编辑</a>
         </Fragment>
       ),
     },

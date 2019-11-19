@@ -50,16 +50,7 @@ class Register extends Component {
 
 
   componentDidUpdate() {
-    const { form, register } = this.props;
-    const account = form.getFieldValue('mail');
-    if (register.status === 'ok') {
-      router.push({
-        pathname: '/user/register-result',
-        state: {
-          account,
-        },
-      });
-    }
+
   }
 
   componentWillUnmount() {
@@ -115,6 +106,8 @@ class Register extends Component {
     return 'poor';
   };
 
+
+
   handleSubmit = e => {
     e.preventDefault();
     const { form, dispatch } = this.props;
@@ -131,21 +124,47 @@ class Register extends Component {
           type: 'register/verifyTel',
           payload:params,
           callback: (response) => {
-            console.log(response);
             if(response){
               // 请求服务成功
-              console.log(response);
               if(response === "success"){
-                message.success("验证码正确");
                 // 注册逻辑
-
+                let params={
+                  company:values.company,
+                  username:values.username,
+                  password:values.confirm,
+                  certcode:values.certcode,
+                  tel:values.mobile,
+                  contact:values.contact,
+                }
+                console.log(params);
+                dispatch({
+                  type: 'register/registerPreCompany',
+                  payload:params,
+                  callback: (response2) => {
+                    if(response2){
+                      // 请求服务成功
+                      if(response2 === "success"){
+                        message.success("注册成功");
+                      }else if(response2 === "手机号未验证"){
+                        message.success("手机号未验证");
+                      } else if(response2 === "公司重复注册"){
+                        message.success("公司重复注册");
+                      } else{
+                        // 失败
+                        message.success("注册失败");
+                      }
+                    }else{
+                      message.success("注册失败");
+                    }
+                  }
+                });
               }else{
-                // 失败
-                message.success(response);
+                message.success("验证码错误");
               }
             }else{
-              message.success("服务器错误");
+              message.success("验证码失败");
             }
+            // 注册逻辑
           }
         });
 

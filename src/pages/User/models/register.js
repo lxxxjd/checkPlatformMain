@@ -1,5 +1,5 @@
 import { fakeRegister} from '@/services/api';
-import { checkUserName ,sendVerify,verifyTel } from '@/services/user';
+import { checkUserName ,sendVerify,verifyTel,registerPreCompany } from '@/services/user';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
 
@@ -13,6 +13,9 @@ export default {
     checkUserNameResult:{},
     verifyResult:{},   // 发送验证码
     verifyTelResult:{}, // 验证验证码
+    registerPreCompanyResult:{}, // 表示注册公司
+
+
   },
 
   effects: {
@@ -54,6 +57,17 @@ export default {
     },
 
 
+    *registerPreCompany({ payload,callback }, { call, put }) {
+      const response = yield call(registerPreCompany, payload);
+      yield put({
+        type: 'registerPreCompanyResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
+
+
+
   },
   reducers: {
     registerHandle(state, { payload }) {
@@ -83,6 +97,14 @@ export default {
       return {
         ...state,
         verifyTelResult: payload.data,
+      };
+    },
+
+
+    registerPreCompanyResult(state, { payload }) {
+      return {
+        ...state,
+        registerPreCompanyResult: payload.data,
       };
     },
 

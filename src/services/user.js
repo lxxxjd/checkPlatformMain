@@ -30,6 +30,18 @@ export async function getUserList() {
 }
 
 
+// 预注册公司
+export async function registerPreCompany(params) {
+  return request(`/api/precompany/register_precompany`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+
+
 
 
 

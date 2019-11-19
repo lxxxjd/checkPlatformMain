@@ -5,13 +5,13 @@ export default {
   'menu.register': '注册',
   'menu.register.result': '注册结果',
 
-  'menu.Archives':'业务归档',
-  'menu.Archives.ArchivesAdd':'归档',
-  'menu.Archives.ArchivesDestory':'退档',
-  'menu.Archives.ArchivesQuery':'查档',
-  'menu.Cargo.CargoList':'货物字典',
-  'menu.Cargo.CargoSort1':'货物一级分类',
-  'menu.Cargo':'货物管理',
+  'menu.Cargo.CargoList':'平台字典',
+  'menu.Cargo.CargoSort1':'货物分类',
+  'menu.Cargo.CargoSort2':'货物二级分类',
+  'menu.Cargo':'平台字典',
+
+  'menu.Company':'公司管理',
+  'menu.Company.PreCompany':'公司申请',
 
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': '分析页',
