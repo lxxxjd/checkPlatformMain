@@ -1,4 +1,4 @@
-import {getPreCompanyList,addPreCompany,updatePreCompany,deletePreCompany} from '@/services/company';
+import {getPreCompanyList,addPreCompany,updatePreCompany,deletePreCompany,createAccount} from '@/services/company';
 
 export default {
   namespace: 'company',
@@ -7,6 +7,7 @@ export default {
     deletePreCompanyResult:{},
     addPreCompanyResult:{},
     updatePreCompanyResult:{},
+    createAccountResult:{},
   },
   effects: {
 
@@ -47,6 +48,16 @@ export default {
       if (callback) callback(response.data);
     },
 
+    *createAccount({ payload,callback }, { call, put }) {
+      const response = yield call(createAccount, payload);
+      yield put({
+        type: 'createAccountResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
+
+
 
 
 
@@ -83,6 +94,14 @@ export default {
         updatePreCompanyResult: payload.data,
       };
     },
+
+    createAccountResult(state, { payload }) {
+      return {
+        ...state,
+        createAccountResult: payload.data,
+      };
+    },
+
 
   }
 

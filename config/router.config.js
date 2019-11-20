@@ -42,6 +42,7 @@ export default [
             path: '/Cargo/CargoSort2',
             name: 'CargoSort2',
             component: './Cargo/CargoSort2',
+            hideInMenu: 'true',//添加页不需要在menu上显示
           },
 
         ],

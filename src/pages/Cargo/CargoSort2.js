@@ -11,7 +11,7 @@ import {
   Input,
   Button,
   Select,
-  Table, message, Modal, DatePicker,
+  Table, message, Modal, DatePicker,Icon,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import moment from 'moment';
@@ -44,8 +44,8 @@ const CreateForm = Form.create()(props => {
       onCancel={() => handleModalVisible()}
     >
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="货物类别名称">
-        {form.getFieldDecorator('sort1', {
-          initialValue: modalInfo.sort1,
+        {form.getFieldDecorator('sort2', {
+          initialValue: modalInfo.sort2,
           rules: [
             {
               required: true,
@@ -73,22 +73,22 @@ const AddForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="货物类别新增"
+      title="货物二级类别新增"
       style={{ top: 100 }}
       visible={addModalVisible}
       onOk={okHandle}
       onCancel={() => addHandleModalVisible()}
     >
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="货物类别名称">
-        {form.getFieldDecorator('sort1', {
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="二级类别名称">
+        {form.getFieldDecorator('sort2', {
           rules: [
             {
               required: true,
-              message: "请输入货物类别名称",
+              message: "请输入货物二级类别名称",
             },
           ],
-        })(<Input placeholder="请输入货物类别名称" />)}
+        })(<Input placeholder="请输入货物二级类别名称" />)}
       </FormItem>
 
     </Modal>
@@ -111,8 +111,8 @@ class CargoSort1 extends PureComponent {
 
   columns = [
     {
-      title: '货物一级分类',
-      dataIndex: 'sort1',
+      title: '货物二级分类',
+      dataIndex: 'sort2',
     },
 
     {
@@ -131,8 +131,13 @@ class CargoSort1 extends PureComponent {
 
   init =()=>{
     const { dispatch } = this.props;
+    const sort1 = sessionStorage.getItem('platform_sort1');
+    let params = {
+      sort1,
+    }
     dispatch({
-      type: 'cargo/getCargosort1List',
+      type: 'cargo/getCargosort2List',
+      payload:params,
       callback: (response) => {
         if (response){
           this.state.dataSource = response.data;
@@ -152,13 +157,14 @@ class CargoSort1 extends PureComponent {
     const { dispatch, form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
+      const sort1 = sessionStorage.getItem('platform_sort1');
       const values = {
         kind :fieldsValue.kind.trim(),
         value: fieldsValue.value.trim(),
+        sort1,
       };
-      console.log(values);
       dispatch({
-        type: 'cargo/getCargosort1List',
+        type: 'cargo/getCargosort2List',
         payload: values,
         callback: (response) => {
           if (response){
@@ -186,10 +192,10 @@ class CargoSort1 extends PureComponent {
   deleteItem = text =>{
     const { dispatch } = this.props;
     const values = {
-      sort1:text.sort1,
+      keyno:text.keyno,
     };
     dispatch({
-      type: 'cargo/deleteCargosort1',
+      type: 'cargo/deleteCargosort2',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -206,6 +212,12 @@ class CargoSort1 extends PureComponent {
 
   addItem = () => {
     this.addHandleModalVisible(true);
+  };
+
+
+  // 返回
+  back = () => {
+    this.props.history.goBack();
   };
 
 
@@ -226,12 +238,13 @@ class CargoSort1 extends PureComponent {
   handleEdit = (fields,modalInfo) => {
     const { dispatch } = this.props;
     let prams = modalInfo;
-    prams.sort1 =  fields.sort1;
+    prams.sort2 =  fields.sort2;
+    const sort1 = sessionStorage.getItem('platform_sort1');
     const values = {
       ...prams,
     };
     dispatch({
-      type: 'cargo/updateCargoSort1',
+      type: 'cargo/updateCargosort2',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -249,11 +262,13 @@ class CargoSort1 extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
+    const sort1 = sessionStorage.getItem('platform_sort1');
     const values = {
       ...fields,
+      sort1,
     };
     dispatch({
-      type: 'cargo/addCargoSort1',
+      type: 'cargo/addCargosort2',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -286,11 +301,11 @@ class CargoSort1 extends PureComponent {
               colon={false}
             >
               {getFieldDecorator('kind', {
-                initialValue:"sort1",
+                initialValue:"sort2",
                 rules: [{  message: '搜索类型' }],
               })(
                 <Select placeholder="搜索类型" >
-                  <Option value="sort1">货物名称</Option>
+                  <Option value="sort2">类别名称</Option>
                 </Select>
               )}
             </Form.Item>
@@ -312,6 +327,7 @@ class CargoSort1 extends PureComponent {
               <Button type="primary" style={{ marginLeft: 8 }} onClick={this.addItem}>
                 新增
               </Button>
+               <Button style={{ marginLeft: 8  ,paddingLeft:0,paddingRight:15}} type="primary" onClick={this.back}><Icon type="left" />返回</Button>
             </span>
           </Col>
         </Row>

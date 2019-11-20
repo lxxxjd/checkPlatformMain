@@ -278,9 +278,20 @@ class PreCompany extends PureComponent {
     },
 
     {
+      title: '状态',
+      dataIndex: 'status',
+    },
+
+    {
       title: '操作',
       render: (text, record) => (
         <Fragment>
+          <a onClick={() => this.pass(text, record)}>审核通过</a>
+          &nbsp;&nbsp;
+          <a onClick={() => this.nopass(text, record)}>审核退回</a>
+          &nbsp;&nbsp;
+          {text.status==="通过"?[<a onClick={() => this.createAccount(text, record)}>创建账号&nbsp;&nbsp;</a>]:[]}
+          &nbsp;&nbsp;
           <a onClick={() => this.modifyItem(text, record)}>修改</a>
           &nbsp;&nbsp;
           <a onClick={() => this.deleteItem(text, record)}>删除</a>
@@ -350,6 +361,55 @@ class PreCompany extends PureComponent {
     });
     this.handleModalVisible(true);
   };
+
+  pass = (text) =>{
+    this.review(text,"通过","操作成功","操作不成功")
+  }
+
+  nopass = (text) =>{
+    this.review(text,"不通过","操作成功","操作不成功")
+  }
+
+  createAccount =(text) =>{
+    const { dispatch } = this.props;
+    const values = {
+      ...text
+    };
+    dispatch({
+      type: 'company/createAccount',
+      payload:values,
+      callback: (response) => {
+        if(response==="success"){
+          message.success("创建成功");
+          this.init();
+        } else {
+          message.success("创建失败");
+        }
+      }
+    });
+  }
+
+  review = (text,status,successMessage,errorMessage) =>{
+    const { dispatch } = this.props;
+    let prams = text;
+    prams.status =  status;
+    const values = {
+      ...prams
+    };
+    dispatch({
+      type: 'company/updatePreCompany',
+      payload:values,
+      callback: (response) => {
+        if(response==="success"){
+          message.success(successMessage);
+          this.init();
+        } else {
+          message.success(errorMessage);
+        }
+      }
+    });
+  }
+
 
   deleteItem = text =>{
     const { dispatch } = this.props;

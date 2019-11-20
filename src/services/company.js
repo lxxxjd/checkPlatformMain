@@ -38,3 +38,13 @@ export async function deletePreCompany(params) {
     },
   });
 }
+
+
+export async function createAccount(params) {
+  return request(`/api/precompany/createAccount`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

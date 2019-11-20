@@ -131,6 +131,14 @@ class CargoSort1 extends PureComponent {
     this.init();
   }
 
+
+  goToCargoSort2 =(text)=>{
+    sessionStorage.setItem('platform_sort1',text.sort1);
+    router.push({
+      pathname:'/Cargo/CargoSort2',
+    });
+  }
+
   init =()=>{
     const { dispatch } = this.props;
     dispatch({
@@ -142,6 +150,7 @@ class CargoSort1 extends PureComponent {
       }
     });
   }
+
 
   handleFormReset = () => {
     const { form } = this.props;
@@ -292,7 +301,7 @@ class CargoSort1 extends PureComponent {
                 rules: [{  message: '搜索类型' }],
               })(
                 <Select placeholder="搜索类型" >
-                  <Option value="sort1">货物名称</Option>
+                  <Option value="sort1">类别名称</Option>
                 </Select>
               )}
             </Form.Item>
