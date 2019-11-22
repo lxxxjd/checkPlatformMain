@@ -4,6 +4,9 @@ export default {
   'menu.login': '登录',
   'menu.register': '注册',
   'menu.register.result': '注册结果',
+  'menu.Home':'首页',
+  'menu.Home.HomePage':'首页',
+
 
   'menu.Cargo.CargoList':'平台字典',
   'menu.Cargo.CargoSort1':'货物分类',
