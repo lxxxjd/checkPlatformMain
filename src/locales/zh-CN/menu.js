@@ -1,3 +1,4 @@
+import CNASOne from '../../pages/Cargo/CNASOne';
 
 export default {
   'menu.home': '首页',
@@ -7,6 +8,10 @@ export default {
   'menu.Home':'首页',
   'menu.Home.HomePage':'首页',
 
+  'menu.Cargo.CNASOne':'CNAS分类',
+  'menu.Cargo.CNASTwo':'CNAS二级分类',
+  'menu.Cargo.CNASThree':'CNAS三级分类',
+  'menu.Cargo.CNASFour':'检验项目',
 
   'menu.Cargo.CargoList':'平台字典',
   'menu.Cargo.CargoSort1':'货物分类',

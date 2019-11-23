@@ -1,3 +1,5 @@
+import CNASFour from '../src/pages/Cargo/CNASFour';
+
 export default [
   // user
   {
@@ -59,6 +61,36 @@ export default [
             component: './Cargo/CargoSort2',
             hideInMenu: 'true',//添加页不需要在menu上显示
           },
+
+          {
+            path: '/Cargo/CNASTwo',
+            name: 'CNASTwo',
+            component: './Cargo/CNASTwo',
+            hideInMenu: 'true',//添加页不需要在menu上显示
+          },
+
+          {
+            path: '/Cargo/CNASThree',
+            name: 'CNASThree',
+            component: './Cargo/CNASThree',
+            hideInMenu: 'true',//添加页不需要在menu上显示
+          },
+
+
+          {
+            path: '/Cargo/CNASOne',
+            name: 'CNASOne',
+            component: './Cargo/CNASOne',
+          },
+
+          {
+            path: '/Cargo/CNASFour',
+            name: 'CNASFour',
+            component: './Cargo/CNASFour',
+            hideInMenu: 'true',//添加页不需要在menu上显示
+          },
+
+
 
         ],
       },
