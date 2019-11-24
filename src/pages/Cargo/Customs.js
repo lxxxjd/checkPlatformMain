@@ -1,5 +1,8 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
+import router from 'umi/router';
+import { formatMessage } from 'umi-plugin-react/locale';
+
 import {
   Row,
   Col,
@@ -8,7 +11,7 @@ import {
   Input,
   Button,
   Select,
-  Table, message, Modal, DatePicker, Icon,
+  Table, message, Modal, DatePicker,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import moment from 'moment';
@@ -34,24 +37,35 @@ const CreateForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="检查项目修改"
+      title="海关修改"
       style={{ top: 100 }}
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
 
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="检查项目">
-        {form.getFieldDecorator('checkProject', {
-          initialValue: modalInfo.checkProject,
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="海关类型">
+        {form.getFieldDecorator('customsType', {
+          initialValue: modalInfo.customsType,
           rules: [
             {
               required: true,
-              message: "请输入检查项目",
+              message: "请输入海关类型",
             },
           ],
-        })(<Input placeholder="请输入检查项目" />)}
+        })(<Input placeholder="请输入海关类型" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="海关名称">
+        {form.getFieldDecorator('customsName', {
+          initialValue: modalInfo.customsName,
+          rules: [
+            {
+              required: true,
+              message: "请输入海关名称",
+            },
+          ],
+        })(<Input placeholder="请输入海关名称" />)}
       </FormItem>
 
 
@@ -73,37 +87,48 @@ const AddForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="检查项目新增"
+      title="海关新增"
       style={{ top: 100 }}
       visible={addModalVisible}
       onOk={okHandle}
       onCancel={() => addHandleModalVisible()}
     >
 
-
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="检查项目">
-        {form.getFieldDecorator('checkProject', {
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="海关类型">
+        {form.getFieldDecorator('customsType', {
           rules: [
             {
               required: true,
-              message: "请输入检查项目",
+              message: "请输入海关类型",
             },
           ],
-        })(<Input placeholder="请输入检查项目" />)}
+        })(<Input placeholder="请输入海关类型" />)}
       </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="海关名称">
+        {form.getFieldDecorator('customsName', {
+          rules: [
+            {
+              required: true,
+              message: "请输入海关名称",
+            },
+          ],
+        })(<Input placeholder="请输入海关名称" />)}
+      </FormItem>
+
+
 
     </Modal>
   );
 });
 
 
-@connect(({ cnas, loading }) => ({
-  cnas,
-  loading: loading.models.cnas,
+@connect(({ customs, loading }) => ({
+  customs,
+  loading: loading.models.customs,
 }))
 @Form.create()
-class CNASFour extends PureComponent {
+class CNASOne extends PureComponent {
   state = {
     modalVisible: false,
     addModalVisible:false,
@@ -112,10 +137,13 @@ class CNASFour extends PureComponent {
   };
 
   columns = [
-
     {
-      title: '检查项目',
-      dataIndex: 'checkProject',
+      title: '海关类型',
+      dataIndex: 'customsType',
+    },
+    {
+      title: '海关名称',
+      dataIndex: 'customsName',
     },
 
     {
@@ -125,7 +153,6 @@ class CNASFour extends PureComponent {
           <a onClick={() => this.deleteItem(text, record)}>删除</a>
           &nbsp;&nbsp;
           <a onClick={() => this.modifyItem(text, record)}>修改</a>
-          &nbsp;&nbsp;
         </Fragment>
       ),
     },
@@ -136,20 +163,11 @@ class CNASFour extends PureComponent {
   }
 
 
-  // 返回
-  back = () => {
-    this.props.history.goBack();
-  };
-
-
-
 
   init =()=>{
     const { dispatch } = this.props;
-    const code =  sessionStorage.getItem('cnasThree_checkCode');
     dispatch({
-      type: 'cnas/getCNASLevelFourList',
-      payload:{code},
+      type: 'customs/getCustomsList',
       callback: (response) => {
         if (response){
           this.state.dataSource = response.data;
@@ -157,6 +175,13 @@ class CNASFour extends PureComponent {
       }
     });
   }
+
+
+  // 返回
+  back = () => {
+    this.props.history.goBack();
+  };
+
 
 
 
@@ -169,16 +194,15 @@ class CNASFour extends PureComponent {
   handleSearch = e=> {
     e.preventDefault();
     const { dispatch, form } = this.props;
-    const code =  sessionStorage.getItem('cnasThree_checkCode');
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       const values = {
         kind :fieldsValue.kind.trim(),
         value: fieldsValue.value.trim(),
-        code,
       };
+      console.log(values);
       dispatch({
-        type: 'cnas/getCNASLevelFourList',
+        type: 'customs/getCustomsList',
         payload: values,
         callback: (response) => {
           if (response){
@@ -209,7 +233,7 @@ class CNASFour extends PureComponent {
       keyno:text.keyno,
     };
     dispatch({
-      type: 'cnas/deleteCNASLevelFour',
+      type: 'customs/deleteCustoms',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -246,12 +270,13 @@ class CNASFour extends PureComponent {
   handleEdit = (fields,modalInfo) => {
     const { dispatch } = this.props;
     let prams = modalInfo;
-    prams.checkProject =  fields.checkProject;
+    prams.customsName =  fields.customsName;
+    prams.customsType =  fields.customsType;
     const values = {
       ...prams,
     };
     dispatch({
-      type: 'cnas/updateCNASLevelFour',
+      type: 'customs/updateCustoms',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -269,13 +294,11 @@ class CNASFour extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const code =  sessionStorage.getItem('cnasThree_checkCode');
     const values = {
       ...fields,
-      checkCode:code,
     };
     dispatch({
-      type: 'cnas/addCNASLevelFour',
+      type: 'customs/addCustoms',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -308,11 +331,12 @@ class CNASFour extends PureComponent {
               colon={false}
             >
               {getFieldDecorator('kind', {
-                initialValue:"checkProject",
+                initialValue:"customsName",
                 rules: [{  message: '搜索类型' }],
               })(
-                <Select placeholder="搜索类型">
-                  <Option value="checkProject">项目名称</Option>
+                <Select placeholder="搜索类型" >
+                  <Option value="customsName">海关名称</Option>
+                  <Option value="customsType">海关类型</Option>
 
                 </Select>
               )}
@@ -335,7 +359,6 @@ class CNASFour extends PureComponent {
               <Button type="primary" style={{ marginLeft: 8 }} onClick={this.addItem}>
                 新增
               </Button>
-              <Button style={{ marginLeft: 8  ,paddingLeft:0}} type="primary" onClick={this.back}><Icon type="left" />返回</Button>
             </span>
           </Col>
         </Row>
@@ -383,4 +406,4 @@ class CNASFour extends PureComponent {
   }
 }
 
-export default CNASFour;
+export default CNASOne;
