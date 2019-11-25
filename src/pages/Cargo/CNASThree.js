@@ -152,7 +152,7 @@ class CNASThree extends PureComponent {
           &nbsp;&nbsp;
           <a onClick={() => this.modifyItem(text, record)}>修改</a>
           &nbsp;&nbsp;
-          <a onClick={() => this.goCNASFour(text, record)}>编辑四级分类</a>
+          <a onClick={() => this.goCNASFour(text, record)}>编辑检查项目</a>
         </Fragment>
       ),
     },

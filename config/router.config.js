@@ -1,4 +1,3 @@
-import CNASFour from '../src/pages/Cargo/CNASFour';
 
 export default [
   // user
