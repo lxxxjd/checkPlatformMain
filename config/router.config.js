@@ -91,6 +91,14 @@ export default [
 
 
 
+          {
+            path: '/Cargo/Customs',
+            name: 'Customs',
+            component: './Cargo/Customs',
+          },
+
+
+
         ],
       },
 

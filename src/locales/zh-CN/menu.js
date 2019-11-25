@@ -12,6 +12,7 @@ export default {
   'menu.Cargo.CNASTwo':'CNAS二级分类',
   'menu.Cargo.CNASThree':'CNAS三级分类',
   'menu.Cargo.CNASFour':'检验项目',
+  'menu.Cargo.Customs':'海关字典',
 
   'menu.Cargo.CargoList':'平台字典',
   'menu.Cargo.CargoSort1':'货物分类',
