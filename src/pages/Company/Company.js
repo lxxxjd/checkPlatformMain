@@ -34,26 +34,96 @@ const CreateForm = Form.create()(props => {
     });
   };
 
+
   return (
     <Modal
       destroyOnClose
-      title="用户修改"
+      title="修改公司"
       style={{ top: 100 }}
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用户名">
-        {form.getFieldDecorator('userName', {
-          initialValue: modalInfo.userName,
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司名称">
+        {form.getFieldDecorator('namec', {
+          initialValue: modalInfo.namec,
           rules: [
             {
               required: true,
-              message: "请输入不重复的用户名",
+              message: "请输入公司名称",
             },
           ],
-        })(<Input placeholder="请输入用户名" />)}
+        })(<Input placeholder="请输入公司名称" />)}
       </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名">
+        {form.getFieldDecorator('namee', {
+          initialValue: modalInfo.namee,
+          rules: [
+            {
+              message: "请输入公司英文名",
+            },
+          ],
+        })(<Input placeholder="请输入公司英文名" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="地址">
+        {form.getFieldDecorator('adres', {
+          initialValue: modalInfo.adres,
+          rules: [
+            {
+              message: "请输入公司地址",
+            },
+          ],
+        })(<Input placeholder="请输入公司地址" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司编号">
+        {form.getFieldDecorator('certcode', {
+          initialValue: modalInfo.certcode,
+          rules: [
+            {
+              required: true,
+              message: "请输入公司编号CertCode",
+            },
+          ],
+        })(<Input placeholder="请输入公司编号CertCode" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司电话">
+        {form.getFieldDecorator('tel', {
+          initialValue: modalInfo.tel,
+          rules: [
+            {
+              message: "请输入公司电话",
+            },
+          ],
+        })(<Input placeholder="请输入公司电话" />)}
+      </FormItem>
+
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="开户行">
+        {form.getFieldDecorator('bank', {
+          initialValue: modalInfo.bank,
+          rules: [
+            {
+              message: "请输入开户行",
+            },
+          ],
+        })(<Input placeholder="请输入开户行" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="母公司">
+        {form.getFieldDecorator('belongto', {
+          initialValue: modalInfo.belongto,
+          rules: [
+            {
+              message: "请输入母公司编号",
+            },
+          ],
+        })(<Input placeholder="请输入母公司编号" />)}
+      </FormItem>
+
 
     </Modal>
   );
@@ -73,23 +143,86 @@ const AddForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="用户修改"
+      title="新增公司信息"
       style={{ top: 100 }}
       visible={addModalVisible}
       onOk={okHandle}
       onCancel={() => addHandleModalVisible()}
     >
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用户名">
-        {form.getFieldDecorator('userName', {
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司名称">
+        {form.getFieldDecorator('namec', {
           rules: [
             {
               required: true,
-              message: "请输入不重复的用户名",
+              message: "请输入公司名称",
             },
           ],
-        })(<Input placeholder="请输入用户名" />)}
+        })(<Input placeholder="请输入公司名称" />)}
       </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名">
+        {form.getFieldDecorator('namee', {
+          rules: [
+            {
+              message: "请输入公司英文名",
+            },
+          ],
+        })(<Input placeholder="请输入公司英文名" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="地址">
+        {form.getFieldDecorator('adres', {
+          rules: [
+            {
+              message: "请输入公司地址",
+            },
+          ],
+        })(<Input placeholder="请输入公司地址" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司编号">
+        {form.getFieldDecorator('certcode', {
+          rules: [
+            {
+              required: true,
+              message: "请输入公司编号CertCode",
+            },
+          ],
+        })(<Input placeholder="请输入公司编号CertCode" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司电话">
+        {form.getFieldDecorator('tel', {
+          rules: [
+            {
+              message: "请输入公司电话",
+            },
+          ],
+        })(<Input placeholder="请输入公司电话" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="开户行">
+        {form.getFieldDecorator('bank', {
+          rules: [
+            {
+              message: "请输入开户行",
+            },
+          ],
+        })(<Input placeholder="请输入开户行" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="母公司">
+        {form.getFieldDecorator('belongto', {
+          rules: [
+            {
+              message: "请输入母公司编号",
+            },
+          ],
+        })(<Input placeholder="请输入母公司编号" />)}
+      </FormItem>
+
+
 
     </Modal>
   );
@@ -101,7 +234,7 @@ const AddForm = Form.create()(props => {
   loading: loading.models.company,
 }))
 @Form.create()
-class CargoList extends PureComponent {
+class Company extends PureComponent {
   state = {
     modalVisible: false,
     addModalVisible:false,
@@ -109,16 +242,32 @@ class CargoList extends PureComponent {
     dataSource:[],
   };
 
+
   columns = [
     {
-      title: '货物一级分类',
-      dataIndex: 'sort1',
+      title: '公司名称',
+      dataIndex: 'namec',
+    },
+    {
+      title: '地址',
+      dataIndex: 'adres',
+    },
+    {
+      title: '电话',
+      dataIndex: 'tel',
+    },
+
+    {
+      title: '开户行',
+      dataIndex: 'bank',
     },
 
     {
       title: '操作',
       render: (text, record) => (
         <Fragment>
+          <a onClick={() => this.setCNAS(text, record)}>编辑CNAS检查项目</a>
+          &nbsp;&nbsp;
           <a onClick={() => this.modifyItem(text, record)}>修改</a>
           &nbsp;&nbsp;
           <a onClick={() => this.deleteItem(text, record)}>删除</a>
@@ -127,44 +276,29 @@ class CargoList extends PureComponent {
     },
   ];
 
-
-
-
   componentDidMount() {
     this.init();
   }
 
-  init =()=>{
-    const user = JSON.parse(localStorage.getItem("userinfo"));
-    const { dispatch } = this.props;
-    const params = {
-      certCode:user.certCode,
-      value:"",
-    };
-    dispatch({
-      type: 'cargo/searchCargos',
-      payload: params,
-      callback: (response) => {
-        if (response){
-          this.state.dataSource = response.data;
-        }
-      }
-    });
-    // 加载cnas信息
-
-    dispatch({
-      type: 'cargo/searchCargos',
-      payload: params,
-      callback: (response) => {
-        if (response){
-          this.state.dataSource = response.data;
-        }
-      }
-    });
-
-
+  setCNAS =(text) =>{
 
   };
+
+
+  init =()=>{
+    const { dispatch } = this.props;
+    const params = {
+    };
+    dispatch({
+      type: 'company/getCompanyList',
+      payload: params,
+      callback: (response) => {
+        if (response){
+          this.state.dataSource = response.data;
+        }
+      }
+    });
+  }
 
   handleFormReset = () => {
     const { form } = this.props;
@@ -177,15 +311,12 @@ class CargoList extends PureComponent {
     const { dispatch, form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      const user = JSON.parse(localStorage.getItem("userinfo"));
       const values = {
-        ...fieldsValue,
         kind :fieldsValue.kind.trim(),
         value: fieldsValue.value.trim(),
-        certCode:user.certCode,
       };
       dispatch({
-        type: 'company/getAllUserListByCertCode',
+        type: 'company/getCompanyList',
         payload: values,
         callback: (response) => {
           if (response){
@@ -210,24 +341,26 @@ class CargoList extends PureComponent {
     this.handleModalVisible(true);
   };
 
+
+
+
   deleteItem = text =>{
     const { dispatch } = this.props;
     const values = {
-      userName:text.userName,
+      ...text
     };
-    console.log(values);
     dispatch({
-      type: 'company/deleteUser',
+      type: 'company/deleteCompany',
       payload:values,
       callback: (response) => {
-        if(response==="success")
+        if(response==="success"){
+          this.init();
           message.success("删除成功");
-        else{
+        } else{
           message.success("删除失败");
         }
       }
     });
-    this.init();
   }
 
 
@@ -253,23 +386,24 @@ class CargoList extends PureComponent {
   handleEdit = (fields,modalInfo) => {
     const { dispatch } = this.props;
     let prams = modalInfo;
-    prams.userName =  fields.userName;
-    prams.password =  fields.password;
-    prams.nameC =  fields.nameC;
-    prams.place =  fields.place;
+    prams.namec =  fields.namec;
+    prams.adres =  fields.adres;
     prams.tel =  fields.tel;
-    prams.section =  fields.section;
-    prams.role =  fields.role;
+    prams.certcode =  fields.certcode;
+    prams.bank =  fields.bank;
+    prams.belongto =  fields.belongto;
+    prams.namee =  fields.namee;
     const values = {
-      ...prams,
+      ...prams
     };
     dispatch({
-      type: 'company/updateUser',
+      type: 'company/updateCompany',
       payload:values,
       callback: (response) => {
-        if(response==="success")
+        if(response==="success"){
           message.success("保存成功");
-        else{
+          this.init();
+        } else {
           message.success("保存失败");
         }
       }
@@ -281,18 +415,17 @@ class CargoList extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const user = JSON.parse(localStorage.getItem("userinfo"));
     const values = {
       ...fields,
-      certCode:user.certCode,
     };
     dispatch({
-      type: 'company/addUser',
+      type: 'company/addCompany',
       payload:values,
       callback: (response) => {
-        if(response==="success")
+        if(response==="success"){
           message.success("保存成功");
-        else{
+          this.init();
+        } else{
           message.success("保存失败");
         }
       }
@@ -300,7 +433,7 @@ class CargoList extends PureComponent {
     this.setState({
       addModalVisible: false,
     });
-    this.init();
+
   }
 
 
@@ -320,11 +453,16 @@ class CargoList extends PureComponent {
               colon={false}
             >
               {getFieldDecorator('kind', {
-                initialValue:"sort1",
+                initialValue:"namec",
                 rules: [{  message: '搜索类型' }],
               })(
-                <Select placeholder="搜索类型" defaultValue="sort1">
-                  <Option value="sort1">货物名称</Option>
+                <Select placeholder="搜索类型">
+                  <Option value="namec">公司名称</Option>
+                  <Option value="adres">地址</Option>
+                  <Option value="tel">电话</Option>
+                  <Option value="certcode">公司编码</Option>
+                  <Option value="bank">开户行</Option>
+                  <Option value="belongto">母公司编号</Option>
                 </Select>
               )}
             </Form.Item>
@@ -373,7 +511,7 @@ class CargoList extends PureComponent {
 
     return (
       <PageHeaderWrapper>
-        <Card bordered={false} size="small">
+        <Card bordered={false} size="middle">
           <div className={styles.tableList}>
             <CreateForm {...parentMethods} modalVisible={modalVisible} modalInfo={modalInfo} dispatch={dispatch} />
             <AddForm {...parentMethods} addModalVisible={addModalVisible} dispatch={dispatch} />
@@ -383,7 +521,7 @@ class CargoList extends PureComponent {
               loading={loading}
               dataSource={dataSource}
               columns={this.columns}
-              rowKey="userName"
+              rowKey="keyno"
               pagination={{showQuickJumper:true,showSizeChanger:true}}
             />
           </div>
@@ -393,4 +531,4 @@ class CargoList extends PureComponent {
   }
 }
 
-export default CargoList;
+export default Company;

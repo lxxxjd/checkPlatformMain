@@ -1,7 +1,7 @@
 import {getCNASLevelOneList,addCNASLevelOne,updateCNASLevelOne,deleteCNASLevelOne,
   getCNASLevelTwoList,addCNASLevelTwo,updateCNASLevelTwo,deleteCNASLevelTwo,
   getCNASLevelThreeList,addCNASLevelThree,updateCNASLevelThree,deleteCNASLevelThree,
-  getCNASLevelFourList,addCNASLevelFour,updateCNASLevelFour,deleteCNASLevelFour
+  getCNASLevelFourList,addCNASLevelFour,updateCNASLevelFour,deleteCNASLevelFour,getCnasLevelInfo
 
 } from '@/services/cnas';
 
@@ -12,6 +12,7 @@ export default {
     getCNASLevelTwoListResult:{},addCNASLevelTwoResult:{},updateCNASLevelTwoResult:{},deleteCNASLevelTwoResult:{},
     getCNASLevelThreeListResult:{},addCNASLevelThreeResult:{},updateCNASLevelThreeResult:{},deleteCNASLevelThreeResult:{},
     getCNASLevelFourListResult:{},addCNASLevelFourResult:{},updateCNASLevelFourResult:{},deleteCNASLevelFourResult:{},
+    getCnasLevelInfoResult:{}, // cnas分类树
 
   },
   effects: {
@@ -54,7 +55,7 @@ export default {
       if (callback) callback(response.data);
     },
 
-    //二级分类
+    // 二级分类
     *getCNASLevelTwoList({ payload,callback }, { call, put }) {
       const response = yield call(getCNASLevelTwoList, payload);
       yield put({
@@ -173,6 +174,17 @@ export default {
       });
       if (callback) callback(response.data);
     },
+
+
+    *getCnasLevelInfo({ payload,callback }, { call, put }) {
+      const response = yield call(getCnasLevelInfo, payload);
+      yield put({
+        type: 'deleteCNASLevelFourResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
+
 
 
 
@@ -302,6 +314,14 @@ export default {
         deleteCNASLevelFourResult: payload.data,
       };
     },
+
+    getCnasLevelInfoResult(state, { payload }) {
+      return {
+        ...state,
+        getCnasLevelInfoResult: payload.data,
+      };
+    },
+
 
 
   }

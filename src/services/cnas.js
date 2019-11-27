@@ -170,8 +170,9 @@ export async function deleteCNASLevelFour(params) {
 
 
 
-
-
+export async function getCnasLevelInfo() {
+  return request(`/api/cnas//getCnasLevelInfo`);
+}
 
 
 

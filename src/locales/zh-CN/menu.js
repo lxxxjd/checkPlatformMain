@@ -21,7 +21,8 @@ export default {
 
   'menu.Cargo':'平台字典',
   'menu.Company':'检验机构',
-  'menu.Company.PreCompany':'机构申请',
+  'menu.Company.PreCompany':'公司审核',
+  'menu.Company.Company':'检验公司',
 
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': '分析页',

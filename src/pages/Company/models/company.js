@@ -1,4 +1,5 @@
-import {getPreCompanyList,addPreCompany,updatePreCompany,deletePreCompany,createAccount} from '@/services/company';
+import {getPreCompanyList,addPreCompany,updatePreCompany,deletePreCompany,createAccount,
+  getCompanyList,addCompany,updateCompany,deleteCompany} from '@/services/company';
 
 export default {
   namespace: 'company',
@@ -8,6 +9,8 @@ export default {
     addPreCompanyResult:{},
     updatePreCompanyResult:{},
     createAccountResult:{},
+
+    getCompanyListResult:{},addCompanyResult:{},updateCompanyResult:{},deleteCompanyResult:{},
   },
   effects: {
 
@@ -52,6 +55,44 @@ export default {
       const response = yield call(createAccount, payload);
       yield put({
         type: 'createAccountResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
+
+    // company
+    *getCompanyList({ payload,callback }, { call, put }) {
+      const response = yield call(getCompanyList, payload);
+      yield put({
+        type: 'getCompanyListResult',
+        payload: response,
+      });
+      if (callback) callback(response);
+    },
+
+    *addCompany({ payload,callback }, { call, put }) {
+      const response = yield call(addCompany, payload);
+      yield put({
+        type: 'addCompanyResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
+
+    *updateCompany({ payload,callback }, { call, put }) {
+      const response = yield call(updateCompany, payload);
+      yield put({
+        type: 'updateCompanyResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
+
+
+    *deleteCompany({ payload,callback }, { call, put }) {
+      const response = yield call(deleteCompany, payload);
+      yield put({
+        type: 'deleteCompanyResult',
         payload: response,
       });
       if (callback) callback(response.data);
@@ -102,6 +143,33 @@ export default {
       };
     },
 
+    getCompanyListResult(state, { payload }) {
+      return {
+        ...state,
+        getCompanyListResult: payload,
+      };
+    },
+
+    addCompanyResult(state, { payload }) {
+      return {
+        ...state,
+        addCompanyResult: payload.data,
+      };
+    },
+
+    updateCompanyResult(state, { payload }) {
+      return {
+        ...state,
+        updateCompanyResult: payload.data,
+      };
+    },
+
+    deleteCompanyResult(state, { payload }) {
+      return {
+        ...state,
+        deleteCompanyResult: payload.data,
+      };
+    },
 
   }
 

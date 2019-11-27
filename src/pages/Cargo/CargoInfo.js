@@ -17,7 +17,6 @@ import {
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import moment from 'moment';
 import styles from '../table.less';
-import cnsOptions from './cnsOptions'
 import Search from './Search.js'
 
 const FormItem = Form.Item;
@@ -37,6 +36,8 @@ class CargoInfo extends PureComponent {
     visible: false ,
     modalInfo : {} ,
     keyno: null,
+    cnsOptions:[],
+
   };
 
   columns = [
@@ -104,6 +105,19 @@ class CargoInfo extends PureComponent {
       type: 'dict/getCargos',
       payload: params,
     });
+
+    dispatch({
+      type: 'cnas/getCnasLevelInfo',
+      payload: {},
+      callback: (response) => {
+        if(response){
+          this.state.cnsOptions = response;
+        }
+      }
+    });
+
+
+
   }
 
   isValidDate =date=> {
@@ -263,7 +277,7 @@ class CargoInfo extends PureComponent {
                 {getFieldDecorator('checkCode', {
                   rules: [{ required: true, message: '请选择cns分类' }],
                 })(
-                    <Cascader options={cnsOptions} placeholder="请选择检验地点"/>
+                    <Cascader options={this.state.cnsOptions} placeholder="请选择检验地点"/>
                   )}
               </Form.Item>
             </Form>

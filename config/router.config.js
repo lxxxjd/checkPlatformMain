@@ -130,6 +130,11 @@ export default [
             component: './Company/PreCompany',
           },
 
+          {
+            path: '/Company/Company',
+            name: 'Company',
+            component: './Company/Company',
+          },
         ],
       },
 
