@@ -48,6 +48,28 @@ export default [
         icon: 'profile',
         name: 'Cargo',
         routes: [
+
+
+
+          {
+            path: '/Cargo/CargoInfo',
+            name: 'CargoInfo',
+            component: './Cargo/CargoInfo',
+          },
+          {
+            path: '/Cargo/ItemList',
+            name: 'ItemList',
+            component: './Cargo/ItemList',
+            hideInMenu: 'true',//添加页不需要在menu上显示
+          },
+          {
+            path: '/Cargo/StandardList',
+            name: 'StandardList',
+            component: './Cargo/StandardList',
+            hideInMenu: 'true',//添加页不需要在menu上显示
+          },
+
+
           {
             path: '/Cargo/CargoSort1',
             name: 'CargoSort1',
@@ -60,6 +82,9 @@ export default [
             component: './Cargo/CargoSort2',
             hideInMenu: 'true',//添加页不需要在menu上显示
           },
+
+
+
 
           {
             path: '/Cargo/CNASTwo',
@@ -88,15 +113,6 @@ export default [
             component: './Cargo/CNASFour',
             hideInMenu: 'true',//添加页不需要在menu上显示
           },
-
-
-
-          {
-            path: '/Cargo/Customs',
-            name: 'Customs',
-            component: './Cargo/Customs',
-          },
-
 
 
         ],
