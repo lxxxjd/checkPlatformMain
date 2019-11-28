@@ -11,7 +11,7 @@ import {
   Input,
   Button,
   Select,
-  Table, message, Modal, DatePicker,
+  Table, message, Modal, DatePicker, Cascader,Checkbox
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import moment from 'moment';
@@ -19,13 +19,14 @@ import styles from '../table.less';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const CheckboxGroup = Checkbox.Group;
 
 
 
 
 // 修改的Form
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleEdit, handleModalVisible,modalInfo } = props;
+  const { modalVisible, form, handleEdit, handleModalVisible,modalInfo,cnsOptions ,checkProjectOptions,checkProjectExist,checkCode} = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -35,94 +36,42 @@ const CreateForm = Form.create()(props => {
   };
 
 
+
   return (
     <Modal
       destroyOnClose
-      title="修改公司"
+      title="修改CNAS检查分类"
       style={{ top: 100 }}
+      width={1000}
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司名称">
-        {form.getFieldDecorator('namec', {
-          initialValue: modalInfo.namec,
-          rules: [
-            {
-              required: true,
-              message: "请输入公司名称",
-            },
-          ],
-        })(<Input placeholder="请输入公司名称" />)}
-      </FormItem>
+      <Form>
+        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="CNAS分类">
+          {form.getFieldDecorator('checkCode', {
+            initialValue:checkCode,
+            rules: [
+              {
+                required: true,
+                message: "选择CNAS分类",
+              },
+            ],
+          })( <Cascader options={cnsOptions} placeholder="选择CNAS分类" disabled />)}
+        </FormItem>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名">
-        {form.getFieldDecorator('namee', {
-          initialValue: modalInfo.namee,
-          rules: [
-            {
-              message: "请输入公司英文名",
-            },
-          ],
-        })(<Input placeholder="请输入公司英文名" />)}
-      </FormItem>
+        <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="检查项目">
+          {form.getFieldDecorator('checkProject', {
+            initialValue:checkProjectExist,
+            rules: [{ message: '检查项目'}],
+          })(
+            <CheckboxGroup
+              options={checkProjectOptions}
+            />
+          )}
+        </Form.Item>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="地址">
-        {form.getFieldDecorator('adres', {
-          initialValue: modalInfo.adres,
-          rules: [
-            {
-              message: "请输入公司地址",
-            },
-          ],
-        })(<Input placeholder="请输入公司地址" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司编号">
-        {form.getFieldDecorator('certcode', {
-          initialValue: modalInfo.certcode,
-          rules: [
-            {
-              required: true,
-              message: "请输入公司编号CertCode",
-            },
-          ],
-        })(<Input placeholder="请输入公司编号CertCode" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司电话">
-        {form.getFieldDecorator('tel', {
-          initialValue: modalInfo.tel,
-          rules: [
-            {
-              message: "请输入公司电话",
-            },
-          ],
-        })(<Input placeholder="请输入公司电话" />)}
-      </FormItem>
-
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="开户行">
-        {form.getFieldDecorator('bank', {
-          initialValue: modalInfo.bank,
-          rules: [
-            {
-              message: "请输入开户行",
-            },
-          ],
-        })(<Input placeholder="请输入开户行" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="母公司">
-        {form.getFieldDecorator('belongto', {
-          initialValue: modalInfo.belongto,
-          rules: [
-            {
-              message: "请输入母公司编号",
-            },
-          ],
-        })(<Input placeholder="请输入母公司编号" />)}
-      </FormItem>
+      </Form>
 
 
     </Modal>
@@ -131,7 +80,7 @@ const CreateForm = Form.create()(props => {
 
 
 const AddForm = Form.create()(props => {
-  const { addModalVisible, form, handleAdd, addHandleModalVisible } = props;
+  const { addModalVisible, form, handleAdd, addHandleModalVisible,cnsOptions,checkProjectOptions} = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -143,86 +92,36 @@ const AddForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="新增公司信息"
+      title="新增CNAS检查分类"
       style={{ top: 100 }}
+      width={1000}
       visible={addModalVisible}
       onOk={okHandle}
       onCancel={() => addHandleModalVisible()}
     >
+      <Form>
+        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="CNAS分类">
+          {form.getFieldDecorator('checkCode', {
+            rules: [
+              {
+                required: true,
+                message: "选择CNAS分类",
+              },
+            ],
+          })( <Cascader options={cnsOptions} placeholder="选择CNAS分类" />)}
+        </FormItem>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司名称">
-        {form.getFieldDecorator('namec', {
-          rules: [
-            {
-              required: true,
-              message: "请输入公司名称",
-            },
-          ],
-        })(<Input placeholder="请输入公司名称" />)}
-      </FormItem>
+        <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="检查项目">
+          {form.getFieldDecorator('checkProject', {
+            rules: [{message: '检查项目'}],
+          })(
+            <CheckboxGroup
+              options={checkProjectOptions}
+            />
+          )}
+        </Form.Item>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名">
-        {form.getFieldDecorator('namee', {
-          rules: [
-            {
-              message: "请输入公司英文名",
-            },
-          ],
-        })(<Input placeholder="请输入公司英文名" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="地址">
-        {form.getFieldDecorator('adres', {
-          rules: [
-            {
-              message: "请输入公司地址",
-            },
-          ],
-        })(<Input placeholder="请输入公司地址" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司编号">
-        {form.getFieldDecorator('certcode', {
-          rules: [
-            {
-              required: true,
-              message: "请输入公司编号CertCode",
-            },
-          ],
-        })(<Input placeholder="请输入公司编号CertCode" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司电话">
-        {form.getFieldDecorator('tel', {
-          rules: [
-            {
-              message: "请输入公司电话",
-            },
-          ],
-        })(<Input placeholder="请输入公司电话" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="开户行">
-        {form.getFieldDecorator('bank', {
-          rules: [
-            {
-              message: "请输入开户行",
-            },
-          ],
-        })(<Input placeholder="请输入开户行" />)}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="母公司">
-        {form.getFieldDecorator('belongto', {
-          rules: [
-            {
-              message: "请输入母公司编号",
-            },
-          ],
-        })(<Input placeholder="请输入母公司编号" />)}
-      </FormItem>
-
-
+      </Form>
 
     </Modal>
   );
@@ -234,43 +133,66 @@ const AddForm = Form.create()(props => {
   loading: loading.models.company,
 }))
 @Form.create()
-class Company extends PureComponent {
+class CNASCheckFourCertCode extends PureComponent {
   state = {
     modalVisible: false,
     addModalVisible:false,
     modalInfo :{},
     dataSource:[],
+    cnsOptions:[],
+
+    checkProjectOptions:[],
+    checkProjectExist:[],
+    checkCode:[],
   };
 
 
   columns = [
+
+
     {
-      title: '公司名称',
-      dataIndex: 'namec',
+      title: 'CNAS一级分类',
+      dataIndex: 'domainName',
     },
     {
-      title: '地址',
-      dataIndex: 'adres',
+      title: 'CNAS二级分类',
+      dataIndex: 'subDomainName',
     },
     {
-      title: '电话',
-      dataIndex: 'tel',
+      title: 'CNAS三级分类',
+      dataIndex: 'checkName',
     },
 
     {
-      title: '开户行',
-      dataIndex: 'bank',
+      title: '检查项目',
+      dataIndex: 'checkProject',
+      render: (text, record) => {
+        if(typeof(text) === undefined || text === null){
+          return;
+        }
+        let  contentStr = [];
+        contentStr = text.split("|");
+        if (contentStr.length < 2) {
+          return text;
+        }
+        let result = null;
+        const br = <br></br>;
+        for( let  j=0 ; j < contentStr.length ; j++){
+          if(j===0){
+            result=contentStr[j];
+          }else{
+            result=<span>{result}{br}{contentStr[j]}</span>;
+          }
+        }
+        return <div>{result}</div>;
+      },
     },
 
     {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.setCNAS(text, record)}>编辑CNAS检查项目</a>
-          &nbsp;&nbsp;
           <a onClick={() => this.modifyItem(text, record)}>修改</a>
-          &nbsp;&nbsp;
-          <a onClick={() => this.deleteItem(text, record)}>删除</a>
         </Fragment>
       ),
     },
@@ -278,30 +200,42 @@ class Company extends PureComponent {
 
   componentDidMount() {
     this.init();
-  }
-
-  setCNAS =(text) =>{
-    sessionStorage.setItem('goCNASCheckFourCertCodeListInfo_CertCode',text.certcode);
-    router.push({
-      pathname:'CNASCheckFourCertCode',
-    });
-  };
-
-
-  init =()=>{
+    // 加载cnas数据
     const { dispatch } = this.props;
-    const params = {
-    };
     dispatch({
-      type: 'company/getCompanyList',
-      payload: params,
+      type: 'cnasinfo/getCnasLevelInfo',
       callback: (response) => {
-        if (response){
-          this.state.dataSource = response.data;
+        if (response) {
+          this.state.cnsOptions = response;
         }
       }
     });
   }
+
+
+  init =()=> {
+    const { dispatch } = this.props;
+    const certCode = sessionStorage.getItem('goCNASCheckFourCertCodeListInfo_CertCode');
+    const params = {
+      certCode,
+    };
+
+    // 获得cnas选项
+    dispatch({
+      type: 'company/getCNASCheckFourCertCodeListInfo',
+      payload: params,
+      callback: (response) => {
+        if (response) {
+          this.state.dataSource = response.data;
+        }
+      }
+    });
+
+
+
+
+
+  };
 
   handleFormReset = () => {
     const { form } = this.props;
@@ -314,12 +248,16 @@ class Company extends PureComponent {
     const { dispatch, form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
+      // eslint-disable-next-line prefer-destructuring
+      const certCode = sessionStorage.getItem('goCNASCheckFourCertCodeListInfo_CertCode');
       const values = {
         kind :fieldsValue.kind.trim(),
         value: fieldsValue.value.trim(),
+        certCode,
       };
+
       dispatch({
-        type: 'company/getCompanyList',
+        type: 'company/getCNASCheckFourCertCodeListInfo',
         payload: values,
         callback: (response) => {
           if (response){
@@ -341,7 +279,42 @@ class Company extends PureComponent {
     this.setState({
       modalInfo:text,
     });
-    this.handleModalVisible(true);
+
+    // 获得检查选项
+    const {dispatch} = this.props;
+    // 获得检查选项
+    dispatch({
+      type: 'cnasinfo/getCNASLevelFourList',
+      payload: {code:text.checkCode},
+      callback: (response) => {
+        if (response) {
+          this.state.checkProjectOptions = [];
+          if(response.data !==undefined){
+            for( let  j=0 ; j < response.data.length ; j++){
+              this.state.checkProjectOptions.push(response.data[j].checkProject);
+            }
+          }
+
+          // 修改时已选的分类
+          this.state.checkCode = [];
+          this.state.checkCode.push(text.checkCode.substring(0,2));
+          this.state.checkCode.push(text.checkCode.substring(0,4));
+          this.state.checkCode.push(text.checkCode);
+
+          // 设置已经存在的检查项目
+          let  contentStr = [];
+          if(text.checkProject!==undefined){
+            contentStr = text.checkProject.split("|");
+          }
+         this.state.checkProjectExist = contentStr;
+
+
+        }
+        this.handleModalVisible(true);
+      }
+    });
+
+
   };
 
 
@@ -437,7 +410,14 @@ class Company extends PureComponent {
       addModalVisible: false,
     });
 
-  }
+  };
+
+  // 返回
+  back = () => {
+    this.props.history.goBack();
+  };
+
+
 
 
 
@@ -456,16 +436,14 @@ class Company extends PureComponent {
               colon={false}
             >
               {getFieldDecorator('kind', {
-                initialValue:"namec",
+                initialValue:"domainName",
                 rules: [{  message: '搜索类型' }],
               })(
                 <Select placeholder="搜索类型">
-                  <Option value="namec">公司名称</Option>
-                  <Option value="adres">地址</Option>
-                  <Option value="tel">电话</Option>
-                  <Option value="certcode">公司编码</Option>
-                  <Option value="bank">开户行</Option>
-                  <Option value="belongto">母公司编号</Option>
+                  <Option value="domainName">一级分类</Option>
+                  <Option value="subDomainName">二级分类</Option>
+                  <Option value="checkName">三级分类</Option>
+                  <Option value="checkProject">检查项目</Option>
                 </Select>
               )}
             </Form.Item>
@@ -487,6 +465,9 @@ class Company extends PureComponent {
               <Button type="primary" style={{ marginLeft: 8 }} onClick={this.addItem}>
                 新增
               </Button>
+              <Button type="primary" style={{ marginLeft: 8 }} onClick={this.back}>
+                返回
+              </Button>
             </span>
           </Col>
         </Row>
@@ -503,12 +484,13 @@ class Company extends PureComponent {
       dispatch,
     } = this.props;
 
-    const {  modalVisible,modalInfo,addModalVisible,dataSource} = this.state;
+    const {  modalVisible,modalInfo,addModalVisible,dataSource,cnsOptions,checkProjectOptions,checkProjectExist,checkCode} = this.state;
     const parentMethods = {
       handleEdit: this.handleEdit,
       handleAdd:this.handleAdd,
       handleModalVisible: this.handleModalVisible,
       addHandleModalVisible:this.addHandleModalVisible,
+
     };
 
 
@@ -516,8 +498,8 @@ class Company extends PureComponent {
       <PageHeaderWrapper>
         <Card bordered={false} size="middle">
           <div className={styles.tableList}>
-            <CreateForm {...parentMethods} modalVisible={modalVisible} modalInfo={modalInfo} dispatch={dispatch} />
-            <AddForm {...parentMethods} addModalVisible={addModalVisible} dispatch={dispatch} />
+            <CreateForm {...parentMethods} modalVisible={modalVisible} modalInfo={modalInfo} dispatch={dispatch} cnsOptions={cnsOptions} checkProjectOptions={checkProjectOptions} checkProjectExist={checkProjectExist} checkCode={checkCode} />
+            <AddForm {...parentMethods} addModalVisible={addModalVisible} dispatch={dispatch} cnsOptions={cnsOptions} checkProjectOptions={checkProjectOptions} checkProjectExist={checkProjectExist} checkCode={checkCode}/>
             <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
             <Table
               size="middle"
@@ -534,4 +516,4 @@ class Company extends PureComponent {
   }
 }
 
-export default Company;
+export default CNASCheckFourCertCode;

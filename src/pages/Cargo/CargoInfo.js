@@ -273,11 +273,11 @@ class CargoInfo extends PureComponent {
                     <Input />
                   )}
               </Form.Item>
-              <Form.Item label="选择cns分类">
+              <Form.Item label="选择CNAS分类">
                 {getFieldDecorator('checkCode', {
-                  rules: [{ required: true, message: '请选择cns分类' }],
+                  rules: [{ required: true, message: '选择CNAS分类' }],
                 })(
-                    <Cascader options={this.state.cnsOptions} placeholder="请选择检验地点"/>
+                    <Cascader options={this.state.cnsOptions} placeholder="选择CNAS分类"/>
                   )}
               </Form.Item>
             </Form>

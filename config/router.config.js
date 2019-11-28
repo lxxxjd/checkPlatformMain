@@ -135,6 +135,12 @@ export default [
             name: 'Company',
             component: './Company/Company',
           },
+
+          {
+            path: '/Company/CNASCheckFourCertCode',
+            name: 'CNASCheckFourCertCode',
+            component: './Company/CNASCheckFourCertCode',
+          },
         ],
       },
 

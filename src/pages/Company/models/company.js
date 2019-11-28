@@ -1,5 +1,6 @@
 import {getPreCompanyList,addPreCompany,updatePreCompany,deletePreCompany,createAccount,
   getCompanyList,addCompany,updateCompany,deleteCompany} from '@/services/company';
+import {getCNASCheckFourCertCodeListInfo} from '@/services/cnas';
 
 export default {
   namespace: 'company',
@@ -9,10 +10,21 @@ export default {
     addPreCompanyResult:{},
     updatePreCompanyResult:{},
     createAccountResult:{},
-
     getCompanyListResult:{},addCompanyResult:{},updateCompanyResult:{},deleteCompanyResult:{},
+
+    getCNASCheckFourCertCodeListInfoResult:{},
+    getCNASLevelFourListResult:{}, // 获得四级检查项目
   },
   effects: {
+
+    *getCNASCheckFourCertCodeListInfo({ payload,callback }, { call, put }) {
+      const response = yield call(getCNASCheckFourCertCodeListInfo, payload);
+      yield put({
+        type: 'getCNASCheckFourCertCodeListInfoResult',
+        payload: response,
+      });
+      if (callback) callback(response);
+    },
 
     *getPreCompanyList({ payload,callback }, { call, put }) {
       const response = yield call(getPreCompanyList, payload);
@@ -69,6 +81,8 @@ export default {
       });
       if (callback) callback(response);
     },
+
+
 
     *addCompany({ payload,callback }, { call, put }) {
       const response = yield call(addCompany, payload);
@@ -167,7 +181,14 @@ export default {
     deleteCompanyResult(state, { payload }) {
       return {
         ...state,
-        deleteCompanyResult: payload.data,
+        deleteCompanyResult: payload,
+      };
+    },
+
+    getCNASCheckFourCertCodeListInfoResult(state, { payload }) {
+      return {
+        ...state,
+        getCNASCheckFourCertCodeListInfoResult: payload.data,
       };
     },
 
