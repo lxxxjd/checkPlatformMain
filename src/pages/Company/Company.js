@@ -244,6 +244,7 @@ class Company extends PureComponent {
 
 
   columns = [
+
     {
       title: '公司名称',
       dataIndex: 'namec',

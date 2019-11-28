@@ -186,6 +186,12 @@ export async function getCNASCheckFourCertCodeListInfo(params) {
   });
 }
 
+export async function handleCNASCheckFourCertCode(params) {
+  return request(`/api/CNASCheckFourCertCode/handleCNASCheckFourCertCode`,{
+    method: 'POST',
+    data: params,
+  });
+}
 
 
 

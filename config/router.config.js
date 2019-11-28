@@ -140,6 +140,7 @@ export default [
             path: '/Company/CNASCheckFourCertCode',
             name: 'CNASCheckFourCertCode',
             component: './Company/CNASCheckFourCertCode',
+            hideInMenu: 'true',//添加页不需要在menu上显示
           },
         ],
       },

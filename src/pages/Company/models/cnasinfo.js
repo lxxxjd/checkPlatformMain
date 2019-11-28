@@ -1,7 +1,8 @@
 import {getCNASLevelOneList,addCNASLevelOne,updateCNASLevelOne,deleteCNASLevelOne,
   getCNASLevelTwoList,addCNASLevelTwo,updateCNASLevelTwo,deleteCNASLevelTwo,
   getCNASLevelThreeList,addCNASLevelThree,updateCNASLevelThree,deleteCNASLevelThree,
-  getCNASLevelFourList,addCNASLevelFour,updateCNASLevelFour,deleteCNASLevelFour,getCnasLevelInfo
+  getCNASLevelFourList,addCNASLevelFour,updateCNASLevelFour,deleteCNASLevelFour,getCnasLevelInfo,
+  handleCNASCheckFourCertCode,
 
 } from '@/services/cnas';
 
@@ -13,9 +14,21 @@ export default {
     getCNASLevelThreeListResult:{},addCNASLevelThreeResult:{},updateCNASLevelThreeResult:{},deleteCNASLevelThreeResult:{},
     getCNASLevelFourListResult:{},addCNASLevelFourResult:{},updateCNASLevelFourResult:{},deleteCNASLevelFourResult:{},
     getCnasLevelInfoResult:{}, // cnas分类树
+    handleCNASCheckFourCertCodeResult:{},
 
   },
   effects: {
+
+    // 增删改 统一处理 CNAS检查项目
+
+    *handleCNASCheckFourCertCode({ payload,callback }, { call, put }) {
+      const response = yield call(handleCNASCheckFourCertCode, payload);
+      yield put({
+        type: 'handleCNASCheckFourCertCodeResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
 
     *getCNASLevelOneList({ payload,callback }, { call, put }) {
       const response = yield call(getCNASLevelOneList, payload);
@@ -321,6 +334,14 @@ export default {
         getCnasLevelInfoResult: payload.data,
       };
     },
+
+    handleCNASCheckFourCertCodeResult(state, { payload }) {
+      return {
+        ...state,
+        handleCNASCheckFourCertCodeResult: payload.data,
+      };
+    },
+
 
 
 

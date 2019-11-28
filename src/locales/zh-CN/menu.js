@@ -25,6 +25,9 @@ export default {
   'menu.Company.Company':'检验公司',
   'menu.Company.CNASCheckFourCertCode':'编辑CNAS检验项目',
   // CNASCheckFourCertCode
+  'menu.Cargo.ItemList':'条目',
+  'menu.Cargo.StandardList':'标准条目',
+
 
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': '分析页',

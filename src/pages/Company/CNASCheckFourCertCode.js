@@ -63,7 +63,6 @@ const CreateForm = Form.create()(props => {
         <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="检查项目">
           {form.getFieldDecorator('checkProject', {
             initialValue:checkProjectExist,
-            rules: [{ message: '检查项目'}],
           })(
             <CheckboxGroup
               options={checkProjectOptions}
@@ -80,13 +79,38 @@ const CreateForm = Form.create()(props => {
 
 
 const AddForm = Form.create()(props => {
-  const { addModalVisible, form, handleAdd, addHandleModalVisible,cnsOptions,checkProjectOptions} = props;
+  const { addModalVisible, form, handleAdd, addHandleModalVisible,cnsOptions,dispatch,AddFormcheckProjectOptions} = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
       handleAdd(fieldsValue);
     });
+  };
+
+// 处理
+  const onChange=(value)=> {
+    if(value !==undefined && value.length!==undefined && value.length ===3){
+      // 获得检查选项
+      dispatch({
+        type: 'cnasinfo/getCNASLevelFourList',
+        payload: {code:value[2]},
+        callback: (response) => {
+          if (response) {
+            AddFormcheckProjectOptions.length = 0;
+            for( let  j=0 ; j < response.data.length ;j++){
+                AddFormcheckProjectOptions.push(response.data[j].checkProject);
+            }
+            form.setFieldsValue({ checkProject:AddFormcheckProjectOptions, });
+          }
+        }
+      });
+    }
+  };
+
+
+  const filter=(inputValue, path) =>{
+    return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
   };
 
   return (
@@ -108,15 +132,15 @@ const AddForm = Form.create()(props => {
                 message: "选择CNAS分类",
               },
             ],
-          })( <Cascader options={cnsOptions} placeholder="选择CNAS分类" />)}
+          })( <Cascader options={cnsOptions} placeholder="选择CNAS分类" onChange={onChange} showSearch={{ filter }} />)}
         </FormItem>
 
         <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="检查项目">
           {form.getFieldDecorator('checkProject', {
-            rules: [{message: '检查项目'}],
+
           })(
             <CheckboxGroup
-              options={checkProjectOptions}
+              options={AddFormcheckProjectOptions}
             />
           )}
         </Form.Item>
@@ -141,14 +165,14 @@ class CNASCheckFourCertCode extends PureComponent {
     dataSource:[],
     cnsOptions:[],
 
-    checkProjectOptions:[],
-    checkProjectExist:[],
-    checkCode:[],
+    checkProjectOptions:[], // 用于修改的所有的选项
+    checkProjectExist:[], // 用于修改的已经存在的选项
+    checkCode:[],        // 用于修改的检查条目数组
+    AddFormcheckProjectOptions : [], // 用于新增的选项
   };
 
 
   columns = [
-
 
     {
       title: 'CNAS一级分类',
@@ -193,6 +217,8 @@ class CNASCheckFourCertCode extends PureComponent {
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.modifyItem(text, record)}>修改</a>
+          &nbsp;&nbsp;
+          <a onClick={() => this.deleteItem(text, record)}>删除</a>
         </Fragment>
       ),
     },
@@ -233,15 +259,13 @@ class CNASCheckFourCertCode extends PureComponent {
 
 
 
-
-
   };
 
   handleFormReset = () => {
     const { form } = this.props;
     form.resetFields();
     this.init();
-  }
+  };
 
   handleSearch = e=> {
     e.preventDefault();
@@ -266,14 +290,14 @@ class CNASCheckFourCertCode extends PureComponent {
         }
       });
     });
-  }
+  };
 
   isValidDate =date=> {
     if(date !==undefined && date !==null ){
       return <span>{moment(date).format('YYYY-MM-DD')}</span>;
     }
     return [];
-  }
+  };
 
   modifyItem = text => {
     this.setState({
@@ -322,22 +346,25 @@ class CNASCheckFourCertCode extends PureComponent {
 
   deleteItem = text =>{
     const { dispatch } = this.props;
-    const values = {
-      ...text
-    };
+    const CNASCheckFourCertCodes=[];
+    let formData = new FormData();
+    formData.append('CNASCheckFourCertCodesJSON', JSON.stringify(CNASCheckFourCertCodes));
+    formData.append('checkCode', text.checkCode);
+    formData.append('certcode', text.certcode);
+
     dispatch({
-      type: 'company/deleteCompany',
-      payload:values,
+      type: 'cnasinfo/handleCNASCheckFourCertCode',
+      payload:formData,
       callback: (response) => {
         if(response==="success"){
+          message.success("保存成功");
           this.init();
-          message.success("删除成功");
-        } else{
-          message.success("删除失败");
+        } else {
+          message.success("保存失败");
         }
       }
     });
-  }
+  };
 
 
   addItem = () => {
@@ -361,20 +388,24 @@ class CNASCheckFourCertCode extends PureComponent {
 
   handleEdit = (fields,modalInfo) => {
     const { dispatch } = this.props;
-    let prams = modalInfo;
-    prams.namec =  fields.namec;
-    prams.adres =  fields.adres;
-    prams.tel =  fields.tel;
-    prams.certcode =  fields.certcode;
-    prams.bank =  fields.bank;
-    prams.belongto =  fields.belongto;
-    prams.namee =  fields.namee;
-    const values = {
-      ...prams
-    };
+    const CNASCheckFourCertCodes=[];
+    for(let i=0;i<fields.checkProject.length;i++){
+      const item = {
+        checkCode:fields.checkCode[2],
+        checkProject:fields.checkProject[i],
+        certcode:modalInfo.certcode
+      };
+      CNASCheckFourCertCodes.push(item);
+    }
+
+    let formData = new FormData();
+    formData.append('CNASCheckFourCertCodesJSON', JSON.stringify(CNASCheckFourCertCodes));
+    formData.append('checkCode', modalInfo.checkCode);
+    formData.append('certcode', modalInfo.certcode);
+
     dispatch({
-      type: 'company/updateCompany',
-      payload:values,
+      type: 'cnasinfo/handleCNASCheckFourCertCode',
+      payload:formData,
       callback: (response) => {
         if(response==="success"){
           message.success("保存成功");
@@ -387,25 +418,41 @@ class CNASCheckFourCertCode extends PureComponent {
     this.setState({
       modalVisible: false,
     });
-  }
+  };
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const values = {
-      ...fields,
-    };
+
+    const certCode = sessionStorage.getItem('goCNASCheckFourCertCodeListInfo_CertCode');
+    const CNASCheckFourCertCodes=[];
+    for(let i=0;i<fields.checkProject.length;i++){
+      const item = {
+        checkCode:fields.checkCode[2],
+        checkProject:fields.checkProject[i],
+        certcode:certCode
+      };
+      CNASCheckFourCertCodes.push(item);
+    }
+
+    let formData = new FormData();
+    formData.append('CNASCheckFourCertCodesJSON', JSON.stringify(CNASCheckFourCertCodes));
+    formData.append('checkCode', fields.checkCode[2]);
+    formData.append('certcode', certCode);
+
     dispatch({
-      type: 'company/addCompany',
-      payload:values,
+      type: 'cnasinfo/handleCNASCheckFourCertCode',
+      payload:formData,
       callback: (response) => {
         if(response==="success"){
           message.success("保存成功");
           this.init();
-        } else{
+        } else {
           message.success("保存失败");
         }
       }
     });
+
+
     this.setState({
       addModalVisible: false,
     });
@@ -416,6 +463,8 @@ class CNASCheckFourCertCode extends PureComponent {
   back = () => {
     this.props.history.goBack();
   };
+
+
 
 
 
@@ -484,7 +533,7 @@ class CNASCheckFourCertCode extends PureComponent {
       dispatch,
     } = this.props;
 
-    const {  modalVisible,modalInfo,addModalVisible,dataSource,cnsOptions,checkProjectOptions,checkProjectExist,checkCode} = this.state;
+    const {  modalVisible,modalInfo,addModalVisible,dataSource,cnsOptions,checkProjectOptions,checkProjectExist,checkCode,AddFormcheckProjectOptions} = this.state;
     const parentMethods = {
       handleEdit: this.handleEdit,
       handleAdd:this.handleAdd,
@@ -499,7 +548,7 @@ class CNASCheckFourCertCode extends PureComponent {
         <Card bordered={false} size="middle">
           <div className={styles.tableList}>
             <CreateForm {...parentMethods} modalVisible={modalVisible} modalInfo={modalInfo} dispatch={dispatch} cnsOptions={cnsOptions} checkProjectOptions={checkProjectOptions} checkProjectExist={checkProjectExist} checkCode={checkCode} />
-            <AddForm {...parentMethods} addModalVisible={addModalVisible} dispatch={dispatch} cnsOptions={cnsOptions} checkProjectOptions={checkProjectOptions} checkProjectExist={checkProjectExist} checkCode={checkCode}/>
+            <AddForm {...parentMethods} addModalVisible={addModalVisible} dispatch={dispatch} cnsOptions={cnsOptions} AddFormcheckProjectOptions={AddFormcheckProjectOptions}   />
             <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
             <Table
               size="middle"
