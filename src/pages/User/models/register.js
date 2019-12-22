@@ -1,5 +1,5 @@
 import { fakeRegister} from '@/services/api';
-import { checkUserName ,sendVerify,verifyTel,registerPreCompany } from '@/services/user';
+import { checkUserName ,sendVerify,verifyTel,registerPreCompany ,addPlatformUser, getRepeatUsername, getRepeatTel} from '@/services/user';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
 
@@ -56,6 +56,15 @@ export default {
       if (callback) callback(response.data);
     },
 
+    *getRepeatUsername({ payload,callback }, { call, put }) {
+      const response = yield call(getRepeatUsername, payload);
+      if (callback) callback(response.data);
+    },
+
+    *getRepeatTel({ payload,callback }, { call, put }) {
+      const response = yield call(getRepeatTel, payload);
+      if (callback) callback(response.data);
+    },
 
     *registerPreCompany({ payload,callback }, { call, put }) {
       const response = yield call(registerPreCompany, payload);
@@ -66,6 +75,14 @@ export default {
       if (callback) callback(response.data);
     },
 
+    *addPlatformUser({ payload,callback }, { call, put }) {
+      const response = yield call(addPlatformUser, payload);
+      yield put({
+        type: 'registerPreCompanyResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
 
 
   },

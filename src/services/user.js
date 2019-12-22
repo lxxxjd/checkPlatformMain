@@ -9,6 +9,13 @@ export async function queryCurrent() {
   return request('/api/currentUser');
 }
 
+export async function getRepeatTel(params) {
+  return request(`/api/PlatformUser/getRepeatTel?tel=${params.tel}`);
+}
+
+export async function getRepeatUsername(params) {
+  return request(`/api/PlatformUser/getRepeatUsername?username=${params.username}`);
+}
 
 export async function checkUserName(params) {
   return request(`/api/user/check_user?username=${params.username}`);
@@ -41,7 +48,14 @@ export async function registerPreCompany(params) {
 }
 
 
-
+export async function addPlatformUser(params) {
+  return request(`/api/PlatformUser/addPlatformUser`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
 
 
 
