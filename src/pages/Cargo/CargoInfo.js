@@ -42,7 +42,7 @@ class CargoInfo extends PureComponent {
 
   columns = [
     {
-      title: '货物名称',
+      title: '检查品名',
       dataIndex: 'cargonamec',
     },
     {
@@ -259,7 +259,7 @@ class CargoInfo extends PureComponent {
             onCancel={this.handleCancel}
           >
             <Form>
-              <Form.Item label="货物名称">
+              <Form.Item label="检查品名">
                 {getFieldDecorator('cargonamec', {
                   rules: [{ required: true, message: '请选择分包实验室' }],
                 })(

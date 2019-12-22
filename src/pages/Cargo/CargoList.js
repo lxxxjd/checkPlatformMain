@@ -324,7 +324,7 @@ class CargoList extends PureComponent {
                 rules: [{  message: '搜索类型' }],
               })(
                 <Select placeholder="搜索类型" defaultValue="sort1">
-                  <Option value="sort1">货物名称</Option>
+                  <Option value="sort1">检查品名</Option>
                 </Select>
               )}
             </Form.Item>
