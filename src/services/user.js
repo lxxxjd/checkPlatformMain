@@ -57,6 +57,14 @@ export async function addPlatformUser(params) {
   });
 }
 
+export async function updatePlatformUser(params) {
+  return request(`/api/PlatformUser/updatePlatformUser`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
 
 
 
