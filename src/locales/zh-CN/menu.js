@@ -29,6 +29,11 @@ export default {
   // CNASCheckFourCertCode
   'menu.Cargo.ItemList':'条目',
   'menu.Cargo.StandardList':'标准条目',
+  'menu.UserManage':'用户管理',
+  'menu.UserManage.PlatformUser':'平台用户',
+  'menu.UserManage.CustomsUser':'海关用户',
+  'menu.UserManage.ContactUser':'委托人用户',
+  'menu.UserManage.CnasUser':'CNAS用户',
 
 
   'menu.dashboard': 'Dashboard',

@@ -27,7 +27,7 @@ const { Option } = Select;
 
 // 修改的Form
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleEdit, handleModalVisible,modalInfo,dispatch } = props;
+  const { modalVisible, form, handleEdit, handleModalVisible,modalInfo } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -36,21 +36,6 @@ const CreateForm = Form.create()(props => {
     });
   };
 
-  const checkUserName = (rule, value, callback) => {
-    dispatch({
-      type: 'PlatformUser/getRepeatUsername',
-      payload:{username:value},
-      callback: (response) => {
-        if (response===undefined || response === "error") {
-          callback(formatMessage({ id: 'validation.userExist.error' }));
-        } else if(response === "repeat"){
-          callback(formatMessage({ id: 'validation.userExist.repeated' }));
-        }else{
-          callback();
-        }
-      }
-    });
-  };
 
   return (
     <Modal
@@ -70,11 +55,8 @@ const CreateForm = Form.create()(props => {
               required: true,
               message: formatMessage({ id: 'validation.username.required' }),
             },
-            {
-              validator: checkUserName,
-            },
           ],
-        })(<Input placeholder="请输入用户名" />)}
+        })(<Input placeholder="请输入用户名" disabled />)}
       </FormItem>
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="密码">
@@ -89,15 +71,38 @@ const CreateForm = Form.create()(props => {
         })(<Input placeholder="请输入密码" />)}
       </FormItem>
 
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="姓名">
+        {form.getFieldDecorator('contactName', {
+          initialValue: modalInfo.contactName,
+          rules: [
+            {
+              required: true,
+              message: "请输入姓名",
+            },
+          ],
+        })(<Input placeholder="请输入姓名" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司">
+        {form.getFieldDecorator('companyName', {
+          initialValue: modalInfo.companyName,
+          rules: [
+            {
+              required: true,
+              message: "请输入公司",
+            },
+          ],
+        })(<Input placeholder="请输入公司" />)}
+      </FormItem>
+
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="手机">
-        {form.getFieldDecorator('tel', {
-          initialValue: modalInfo.tel,
+        {form.getFieldDecorator('contactPhone', {
+          initialValue: modalInfo.contactPhone,
           rules: [
             {
               required: true,
               message: "请输入手机",
             },
-
           ],
         })(<Input placeholder="请输入手机" />)}
       </FormItem>
@@ -119,18 +124,6 @@ const CreateForm = Form.create()(props => {
         )}
       </FormItem>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司">
-        {form.getFieldDecorator('company', {
-          initialValue: modalInfo.company,
-          rules: [
-            {
-              required: true,
-              message: "请输入公司",
-            },
-          ],
-        })(<Input placeholder="请输入公司" />)}
-      </FormItem>
-
 
     </Modal>
   );
@@ -149,7 +142,7 @@ const AddForm = Form.create()(props => {
 
   const checkUserName = (rule, value, callback) => {
     dispatch({
-      type: 'PlatformUser/getRepeatUsername',
+      type: 'Contact/getRepeatUsername',
       payload:{username:value},
       callback: (response) => {
         if (response===undefined || response === "error") {
@@ -172,7 +165,6 @@ const AddForm = Form.create()(props => {
       onOk={okHandle}
       onCancel={() => addHandleModalVisible()}
     >
-
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用户名">
         {form.getFieldDecorator('username', {
@@ -201,8 +193,30 @@ const AddForm = Form.create()(props => {
         })(<Input placeholder="请输入密码" />)}
       </FormItem>
 
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="姓名">
+        {form.getFieldDecorator('contactName', {
+          rules: [
+            {
+              required: true,
+              message: "请输入姓名",
+            },
+          ],
+        })(<Input placeholder="请输入姓名" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司">
+        {form.getFieldDecorator('companyName', {
+          rules: [
+            {
+              required: true,
+              message: "请输入公司",
+            },
+          ],
+        })(<Input placeholder="请输入公司" />)}
+      </FormItem>
+
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="手机">
-        {form.getFieldDecorator('tel', {
+        {form.getFieldDecorator('contactPhone', {
           rules: [
             {
               required: true,
@@ -228,27 +242,17 @@ const AddForm = Form.create()(props => {
         )}
       </FormItem>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司">
-        {form.getFieldDecorator('company', {
-          rules: [
-            {
-              required: true,
-              message: "请输入公司",
-            },
-          ],
-        })(<Input placeholder="请输入公司" />)}
-      </FormItem>
     </Modal>
   );
 });
 
 
-@connect(({ PlatformUser, loading }) => ({
-  PlatformUser,
-  loading: loading.models.PlatformUser,
+@connect(({ Contact, loading }) => ({
+  Contact,
+  loading: loading.models.Contact,
 }))
 @Form.create()
-class PlatformUser extends PureComponent {
+class Contact extends PureComponent {
   state = {
     modalVisible: false,
     addModalVisible:false,
@@ -266,16 +270,20 @@ class PlatformUser extends PureComponent {
       dataIndex: 'password',
     },
     {
-      title: '手机可见性',
-      dataIndex: 'isvisible',
-    },
-    {
-      title: '电话',
-      dataIndex: 'tel',
+      title: '姓名',
+      dataIndex: 'contactName',
     },
     {
       title: '公司',
-      dataIndex: 'company',
+      dataIndex: 'companyName',
+    },
+    {
+      title: '手机',
+      dataIndex: 'contactPhone',
+    },
+    {
+      title: '手机可见性',
+      dataIndex: 'isvisible',
     },
 
     {
@@ -301,7 +309,7 @@ class PlatformUser extends PureComponent {
     const { dispatch } = this.props;
     const params = {};
     dispatch({
-      type: 'PlatformUser/getPlatformUserList',
+      type: 'Contact/getContactList',
       payload: params,
       callback: (response) => {
         if (response){
@@ -327,7 +335,7 @@ class PlatformUser extends PureComponent {
         value: fieldsValue.value.trim(),
       };
       dispatch({
-        type: 'PlatformUser/getPlatformUserList',
+        type: 'Contact/getContactList',
         payload: values,
         callback: (response) => {
           if (response){
@@ -358,7 +366,7 @@ class PlatformUser extends PureComponent {
       ...text
     };
     dispatch({
-      type: 'PlatformUser/deletePlatformUser',
+      type: 'Contact/deleteContact',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -397,13 +405,14 @@ class PlatformUser extends PureComponent {
     prams.username =  fields.username;
     prams.password =  fields.password;
     prams.isvisible =  fields.isvisible;
-    prams.tel =  fields.tel;
-    prams.company =  fields.company;
+    prams.contactName =  fields.contactName;
+    prams.contactPhone =  fields.contactPhone;
+    prams.companyName =  fields.companyName;
     const values = {
       ...prams
     };
     dispatch({
-      type: 'PlatformUser/updatePlatformUser',
+      type: 'Contact/updateContact',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -421,7 +430,6 @@ class PlatformUser extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const user = JSON.parse(localStorage.getItem("userinfo"));
     const values = {
       ...fields,
     };
@@ -429,12 +437,12 @@ class PlatformUser extends PureComponent {
       addModalVisible: false,
     });
     if( this.state.dataSource.find(item=>item.username === fields.username)){
-      message.success("添加用户已存在");
+      message.success("添加项目已存在");
       return;
     }
 
     dispatch({
-      type: 'PlatformUser/addPlatformUser',
+      type: 'Contact/addContact',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -446,7 +454,6 @@ class PlatformUser extends PureComponent {
       }
     });
   };
-
 
 
 
@@ -470,9 +477,10 @@ class PlatformUser extends PureComponent {
                 <Select placeholder="搜索类型">
                   <Option value="username">用户名</Option>
                   <Option value="password">密码</Option>
-                  <Option value="isvisible">电话可见性</Option>
-                  <Option value="tel">电话</Option>
-                  <Option value="company">公司名称</Option>
+                  <Option value="contactName">姓名</Option>
+                  <Option value="companyName">公司</Option>
+                  <Option value="contactPhone">手机</Option>
+                  <Option value="isvisible">手机可见性</Option>
                 </Select>
               )}
             </Form.Item>
@@ -541,4 +549,4 @@ class PlatformUser extends PureComponent {
   }
 }
 
-export default PlatformUser;
+export default Contact;

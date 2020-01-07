@@ -153,19 +153,34 @@ export default [
       },
 
 
-      // {
-      //   path: '/UserManage',
-      //   icon: 'file',
-      //   name: 'UserManage',
-      //   routes: [
-      //
-      //     {
-      //       path: '/UserManage/PlatformUser',
-      //       name: 'PlatformUser',
-      //       component: './UserManage/PlatformUser',
-      //     },
-      //   ],
-      // },
+      {
+        path: '/UserManage',
+        icon: 'file',
+        name: 'UserManage',
+        routes: [
+
+          {
+            path: '/UserManage/PlatformUser',
+            name: 'PlatformUser',
+            component: './UserManage/PlatformUser',
+          },
+          {
+            path: '/UserManage/CnasUser',
+            name: 'CnasUser',
+            component: './UserManage/CnasUser',
+          },
+          {
+            path: '/UserManage/ContactUser',
+            name: 'ContactUser',
+            component: './UserManage/ContactUser',
+          },
+          {
+            path: '/UserManage/CustomsUser',
+            name: 'CustomsUser',
+            component: './UserManage/CustomsUser',
+          },
+        ],
+      },
 
 
 

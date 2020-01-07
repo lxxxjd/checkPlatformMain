@@ -36,21 +36,7 @@ const CreateForm = Form.create()(props => {
     });
   };
 
-  const checkUserName = (rule, value, callback) => {
-    dispatch({
-      type: 'PlatformUser/getRepeatUsername',
-      payload:{username:value},
-      callback: (response) => {
-        if (response===undefined || response === "error") {
-          callback(formatMessage({ id: 'validation.userExist.error' }));
-        } else if(response === "repeat"){
-          callback(formatMessage({ id: 'validation.userExist.repeated' }));
-        }else{
-          callback();
-        }
-      }
-    });
-  };
+
 
   return (
     <Modal
@@ -70,11 +56,8 @@ const CreateForm = Form.create()(props => {
               required: true,
               message: formatMessage({ id: 'validation.username.required' }),
             },
-            {
-              validator: checkUserName,
-            },
           ],
-        })(<Input placeholder="请输入用户名" />)}
+        })(<Input placeholder="请输入用户名" disabled />)}
       </FormItem>
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="密码">
@@ -132,6 +115,41 @@ const CreateForm = Form.create()(props => {
       </FormItem>
 
 
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="角色">
+        {form.getFieldDecorator('role', {
+          initialValue: modalInfo.role,
+          rules: [
+            {
+              required: true,
+              message: "请选择角色",
+            },
+          ],
+        })(
+          <Select placeholder="请选择角色" style={{width:'100%'}}>
+            <Option value="审核老师">审核老师</Option>
+            <Option value="管理员">管理员</Option>
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="审核状态">
+        {form.getFieldDecorator('ispass', {
+          initialValue: modalInfo.ispass,
+          rules: [
+            {
+              required: true,
+              message: "请选择审核状态",
+            },
+          ],
+        })(
+          <Select placeholder="请选择审核状态" style={{width:'100%'}}>
+            <Option value="通过">通过</Option>
+            <Option value="不通过">不通过</Option>
+          </Select>
+        )}
+      </FormItem>
+
+
     </Modal>
   );
 });
@@ -141,7 +159,9 @@ const AddForm = Form.create()(props => {
   const { addModalVisible, form, handleAdd, addHandleModalVisible,dispatch} = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
-      if (err) return;
+      if (err){
+        return;
+      }
       form.resetFields();
       handleAdd(fieldsValue);
     });
@@ -149,7 +169,7 @@ const AddForm = Form.create()(props => {
 
   const checkUserName = (rule, value, callback) => {
     dispatch({
-      type: 'PlatformUser/getRepeatUsername',
+      type: 'CnasUser/getRepeatUsername',
       payload:{username:value},
       callback: (response) => {
         if (response===undefined || response === "error") {
@@ -201,6 +221,17 @@ const AddForm = Form.create()(props => {
         })(<Input placeholder="请输入密码" />)}
       </FormItem>
 
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="姓名">
+        {form.getFieldDecorator('nameC', {
+          rules: [
+            {
+              required: true,
+              message: "请输入姓名",
+            },
+          ],
+        })(<Input placeholder="请输入姓名" />)}
+      </FormItem>
+
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="手机">
         {form.getFieldDecorator('tel', {
           rules: [
@@ -238,17 +269,51 @@ const AddForm = Form.create()(props => {
           ],
         })(<Input placeholder="请输入公司" />)}
       </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="角色">
+        {form.getFieldDecorator('role', {
+          rules: [
+            {
+              required: true,
+              message: "请选择角色",
+            },
+          ],
+        })(
+          <Select placeholder="请选择角色" style={{width:'100%'}}>
+            <Option value="审核老师">审核老师</Option>
+            <Option value="管理员">管理员</Option>
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="审核状态">
+        {form.getFieldDecorator('ispass', {
+          initialValue:"通过",
+          rules: [
+            {
+              required: true,
+              message: "请审核",
+            },
+          ],
+        })(
+          <Select placeholder="请审核" style={{width:'100%'}}>
+            <Option value="通过">通过</Option>
+            <Option value="不通过">不通过</Option>
+          </Select>
+        )}
+      </FormItem>
+
     </Modal>
   );
 });
 
 
-@connect(({ PlatformUser, loading }) => ({
-  PlatformUser,
-  loading: loading.models.PlatformUser,
+@connect(({ CnasUser, loading }) => ({
+  CnasUser,
+  loading: loading.models.CnasUser,
 }))
 @Form.create()
-class PlatformUser extends PureComponent {
+class CnasUser extends PureComponent {
   state = {
     modalVisible: false,
     addModalVisible:false,
@@ -266,6 +331,10 @@ class PlatformUser extends PureComponent {
       dataIndex: 'password',
     },
     {
+      title: '姓名',
+      dataIndex: 'nameC',
+    },
+    {
       title: '手机可见性',
       dataIndex: 'isvisible',
     },
@@ -277,6 +346,18 @@ class PlatformUser extends PureComponent {
       title: '公司',
       dataIndex: 'company',
     },
+
+    {
+      title: '角色',
+      dataIndex: 'role',
+    },
+
+
+    {
+      title: '审核状态',
+      dataIndex: 'ispass',
+    },
+
 
     {
       title: '操作',
@@ -301,7 +382,7 @@ class PlatformUser extends PureComponent {
     const { dispatch } = this.props;
     const params = {};
     dispatch({
-      type: 'PlatformUser/getPlatformUserList',
+      type: 'CnasUser/getCnasUserList',
       payload: params,
       callback: (response) => {
         if (response){
@@ -327,7 +408,7 @@ class PlatformUser extends PureComponent {
         value: fieldsValue.value.trim(),
       };
       dispatch({
-        type: 'PlatformUser/getPlatformUserList',
+        type: 'CnasUser/getCnasUserList',
         payload: values,
         callback: (response) => {
           if (response){
@@ -358,7 +439,7 @@ class PlatformUser extends PureComponent {
       ...text
     };
     dispatch({
-      type: 'PlatformUser/deletePlatformUser',
+      type: 'CnasUser/deleteCnasUser',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -399,11 +480,14 @@ class PlatformUser extends PureComponent {
     prams.isvisible =  fields.isvisible;
     prams.tel =  fields.tel;
     prams.company =  fields.company;
+    prams.role =  fields.role;
+    prams.nameC =  fields.nameC;
+    prams.ispass =  fields.ispass;
     const values = {
       ...prams
     };
     dispatch({
-      type: 'PlatformUser/updatePlatformUser',
+      type: 'CnasUser/updateCnasUser',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -421,7 +505,6 @@ class PlatformUser extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const user = JSON.parse(localStorage.getItem("userinfo"));
     const values = {
       ...fields,
     };
@@ -434,7 +517,7 @@ class PlatformUser extends PureComponent {
     }
 
     dispatch({
-      type: 'PlatformUser/addPlatformUser',
+      type: 'CnasUser/addCnasUser',
       payload:values,
       callback: (response) => {
         if(response==="success"){
@@ -469,6 +552,7 @@ class PlatformUser extends PureComponent {
               })(
                 <Select placeholder="搜索类型">
                   <Option value="username">用户名</Option>
+                  <Option value="nameC">姓名</Option>
                   <Option value="password">密码</Option>
                   <Option value="isvisible">电话可见性</Option>
                   <Option value="tel">电话</Option>
@@ -541,4 +625,4 @@ class PlatformUser extends PureComponent {
   }
 }
 
-export default PlatformUser;
+export default CnasUser;

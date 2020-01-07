@@ -2,6 +2,11 @@ import request from '@/utils/request';
 import { stringify } from 'qs';
 
 
+export async function getRepeatUsername(params) {
+  return request(`/api/PlatformUser/getRepeatUsername?username=${params.username}`);
+}
+
+
 export async function getPlatformUserList(params) {
   return request(`/api/PlatformUser/getPlatformUserList`,{
     method: 'POST',

@@ -1,5 +1,6 @@
 import { fakeRegister} from '@/services/api';
-import {sendVerify,verifyTel, addCnasuser, getRepeatUsername, getRepeatTel, updatePlatformUser } from '@/services/user';
+import {sendVerify,verifyTel, getRepeatUsername, getRepeatTel, updatePlatformUser } from '@/services/user';
+import { addCnasuser} from '@/services/CnasUser';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
 

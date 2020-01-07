@@ -36,3 +36,10 @@ export async function deleteCustomsUser(params) {
   });
 }
 
+
+export async function getRepeatUsername(params) {
+  return request(`/api/customsuser/getRepeatUsername?username=${params.username}`);
+}
+
+
+
