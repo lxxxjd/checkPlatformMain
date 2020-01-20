@@ -137,23 +137,23 @@ class PlatformRegister extends Component {
                       if(response2 === "success"){
                         message.success("注册成功");
                       }else if(response2 === "手机号未验证"){
-                        message.success("手机号未验证");
+                        message.error("手机号未验证");
                       } else if(response2 === "公司重复注册"){
-                        message.success("公司重复注册");
+                        message.error("公司重复注册");
                       } else{
                         // 失败
-                        message.success("注册失败");
+                        message.error("注册失败");
                       }
                     }else{
-                      message.success("注册失败");
+                      message.error("注册失败");
                     }
                   }
                 });
               }else{
-                message.success("验证码错误");
+                message.error("验证码错误");
               }
             }else{
-              message.success("验证码失败");
+              message.error("验证码失败");
             }
             // 注册逻辑
           }
