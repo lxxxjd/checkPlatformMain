@@ -263,7 +263,7 @@ class Contact extends PureComponent {
   columns = [
     {
       title: '用户名',
-      dataIndex: 'username',
+      dataIndex: 'userName',
     },
     {
       title: '密码',
