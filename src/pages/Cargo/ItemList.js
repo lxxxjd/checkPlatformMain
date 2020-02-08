@@ -96,7 +96,6 @@ class ItemList extends PureComponent {
     const cargoname =  sessionStorage.getItem('cargoname');
     const { dispatch } = this.props;
     const params = {
-      certCode:user.certCode,
       cargoname,
     };
     dispatch({
@@ -149,7 +148,6 @@ class ItemList extends PureComponent {
               ...values,
               keyno,
               cargoname,
-              certcode:user.certCode,
             },
             callback: (response) => {
               if (response.code === 200) {
@@ -172,7 +170,6 @@ class ItemList extends PureComponent {
             payload: {
               ...values,
               cargoname,
-              certcode:user.certCode,
             },
             callback: (response) => {
               if (response.code === 200) {
