@@ -70,11 +70,22 @@ const CreateForm = Form.create()(props => {
               required: true,
               message: formatMessage({ id: 'validation.username.required' }),
             },
+          ],
+        })(<Input placeholder="请输入用户名" />)}
+      </FormItem>
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="真实姓名">
+        {form.getFieldDecorator('namec', {
+          initialValue: modalInfo.namec,
+          rules: [
+            {
+              required: true,
+              message: "请输入真实姓名"
+            },
             {
               validator: checkUserName,
             },
           ],
-        })(<Input placeholder="请输入用户名" />)}
+        })(<Input placeholder="请输入真实姓名" />)}
       </FormItem>
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="密码">
@@ -190,6 +201,20 @@ const AddForm = Form.create()(props => {
         )}
       </FormItem>
 
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="真实姓名">
+        {form.getFieldDecorator('namec', {
+          rules: [
+            {
+              required: true,
+              message: "请输入真实姓名"
+            },
+            {
+              validator: checkUserName,
+            },
+          ],
+        })(<Input placeholder="请输入真实姓名" />)}
+      </FormItem>
+
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="密码">
         {form.getFieldDecorator('password', {
           rules: [
@@ -260,6 +285,10 @@ class PlatformUser extends PureComponent {
     {
       title: '用户名',
       dataIndex: 'username',
+    },
+    {
+      title: '姓名',
+      dataIndex: 'namec',
     },
     {
       title: '密码',
@@ -393,14 +422,15 @@ class PlatformUser extends PureComponent {
 
   handleEdit = (fields,modalInfo) => {
     const { dispatch } = this.props;
-    let prams = modalInfo;
-    prams.username =  fields.username;
-    prams.password =  fields.password;
-    prams.isvisible =  fields.isvisible;
-    prams.tel =  fields.tel;
-    prams.company =  fields.company;
+    let params = modalInfo;
+    params.username =  fields.username;
+    params.password =  fields.password;
+    params.isvisible =  fields.isvisible;
+    params.tel =  fields.tel;
+    params.company =  fields.company;
+    params.namec = fields.namec;
     const values = {
-      ...prams
+      ...params
     };
     dispatch({
       type: 'PlatformUser/updatePlatformUser',

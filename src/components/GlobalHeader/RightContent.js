@@ -73,7 +73,7 @@ export default class GlobalHeaderRight extends PureComponent {
       theme,
     } = this.props;
     const user = JSON.parse(localStorage.getItem("userinfo"));
-    const username = user.userName;
+    const username = user.username;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="userinfo">
@@ -95,6 +95,66 @@ export default class GlobalHeaderRight extends PureComponent {
     }
     return (
       <div className={className}>
+        <HeaderSearch
+          className={`${styles.action} ${styles.search}`}
+          placeholder={formatMessage({ id: 'component.globalHeader.search' })}
+          dataSource={[
+            formatMessage({ id: 'component.globalHeader.search.example1' }),
+            formatMessage({ id: 'component.globalHeader.search.example2' }),
+            formatMessage({ id: 'component.globalHeader.search.example3' }),
+          ]}
+          onSearch={value => {
+            console.log('input', value); // eslint-disable-line
+          }}
+          onPressEnter={value => {
+            console.log('enter', value); // eslint-disable-line
+          }}
+        />
+        {/*<NoticeIcon*/}
+        {/*  className={styles.action}*/}
+        {/*  count={currentUser.unreadCount}*/}
+        {/*  onItemClick={(item, tabProps) => {*/}
+        {/*    this.changeReadState(item, tabProps);*/}
+        {/*  }}*/}
+        {/*  loading={fetchingNotices}*/}
+        {/*  locale={{*/}
+        {/*    emptyText: formatMessage({ id: 'component.noticeIcon.empty' }),*/}
+        {/*    clear: formatMessage({ id: 'component.noticeIcon.clear' }),*/}
+        {/*    viewMore: formatMessage({ id: 'component.noticeIcon.view-more' }),*/}
+        {/*    notification: formatMessage({ id: 'component.globalHeader.notification' }),*/}
+        {/*    message: formatMessage({ id: 'component.globalHeader.message' }),*/}
+        {/*    event: formatMessage({ id: 'component.globalHeader.event' }),*/}
+        {/*  }}*/}
+        {/*  onClear={onNoticeClear}*/}
+        {/*  onPopupVisibleChange={onNoticeVisibleChange}*/}
+        {/*  onViewMore={() => message.info('Click on view more')}*/}
+        {/*  clearClose*/}
+        {/*>*/}
+        {/*  <NoticeIcon.Tab*/}
+        {/*    count={unreadMsg.notification}*/}
+        {/*    list={noticeData.notification}*/}
+        {/*    title="notification"*/}
+        {/*    emptyText={formatMessage({ id: 'component.globalHeader.notification.empty' })}*/}
+        {/*    emptyImage="https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg"*/}
+        {/*    showViewMore*/}
+        {/*  />*/}
+        {/*  <NoticeIcon.Tab*/}
+        {/*    count={unreadMsg.message}*/}
+        {/*    list={noticeData.message}*/}
+        {/*    title="message"*/}
+        {/*    emptyText={formatMessage({ id: 'component.globalHeader.message.empty' })}*/}
+        {/*    emptyImage="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg"*/}
+        {/*    showViewMore*/}
+        {/*  />*/}
+        {/*  <NoticeIcon.Tab*/}
+        {/*    count={unreadMsg.event}*/}
+        {/*    list={noticeData.event}*/}
+        {/*    title="event"*/}
+        {/*    emptyText={formatMessage({ id: 'component.globalHeader.event.empty' })}*/}
+        {/*    emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"*/}
+        {/*    showViewMore*/}
+        {/*  />*/}
+        {/*</NoticeIcon>*/}
         {currentUser.name ? (
           <HeaderDropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
@@ -104,12 +164,13 @@ export default class GlobalHeaderRight extends PureComponent {
                 src={currentUser.avatar}
                 alt="avatar"
               />
-              <span className={styles.name}>{username}</span>
+            <span className={styles.name}>{username}</span>
             </span>
           </HeaderDropdown>
         ) : (
           <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
         )}
+        {/*<SelectLang className={styles.action} />*/}
       </div>
     );
   }

@@ -16,7 +16,7 @@ const FooterView = () => (
       ]}
       copyright={
         <Fragment>
-          Copyright <Icon type="copyright" /> 中国检验鉴定公司
+          Copyright <Icon type="copyright" /> 水木梁清
         </Fragment>
       }
     />
