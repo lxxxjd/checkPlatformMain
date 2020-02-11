@@ -8,8 +8,8 @@ const FooterView = () => (
     <GlobalFooter
       links={[
         {
-          key: '检验鉴定平台',
-          title: '检验鉴定平台',
+          key: '',
+          title: '',
           href: 'https://ant.design',
           blankTarget: true,
         },
