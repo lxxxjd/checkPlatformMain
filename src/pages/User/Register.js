@@ -119,7 +119,7 @@ class Register extends Component {
         const params={
           tel,
           verifyCode
-        }
+        };
         dispatch({
           type: 'register/verifyTel',
           payload:params,
@@ -135,8 +135,7 @@ class Register extends Component {
                   certcode:values.certcode,
                   tel:values.mobile,
                   contact:values.contact,
-                }
-                console.log(params);
+                };
                 dispatch({
                   type: 'register/registerPreCompany',
                   payload:params,
@@ -144,22 +143,22 @@ class Register extends Component {
                     if(response2){
                       // 请求服务成功
                       if(response2 === "success"){
-                        message.success("注册成功");
+                        message.success("登记成功,平台在审核中，审核结果会和您联系");
                       }else if(response2 === "手机号未验证"){
-                        message.success("手机号未验证");
+                        message.error("手机号未验证，请先验证手机号码");
                       } else if(response2 === "公司重复注册"){
-                        message.success("公司重复注册");
+                        message.error("公司重复注册，注册失败");
                       } else{
                         // 失败
-                        message.success("注册失败");
+                        message.error("注册失败，请联系管理员");
                       }
                     }else{
-                      message.success("注册失败");
+                      message.error("注册失败，请联系管理员");
                     }
                   }
                 });
               }else{
-                message.success("验证码错误");
+                message.error("验证码错误，请输入正确的验证码");
               }
             }else{
               message.success("验证码失败");
