@@ -6,7 +6,7 @@ export default {
   'form.save': '保存',
   'form.email.placeholder': '邮箱',
   'form.company.placeholder':"公司名",
-  'form.certcode.placeholder':"Certcode",
+  'form.certcode.placeholder':"请输入委托编号前四位",
   'form.username.placeholder':"用户名",
   'form.contact.placeholder':"联系人",
   'form.password.placeholder': '至少6位密码，区分大小写',

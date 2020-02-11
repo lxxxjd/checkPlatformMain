@@ -284,23 +284,7 @@ class Register extends Component {
               </Col>
             </Row>
           </FormItem>
-          <FormItem>
-            <Row gutter={4}>
-              <Col span={5}><div>Certcode：</div></Col>
-              <Col span={19}>
-                {getFieldDecorator('certcode', {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({ id: 'validation.certcode.required' }),
-                    },
-                  ],
-                })(
-                  <Input size="large" placeholder={formatMessage({ id: 'form.certcode.placeholder' })} />
-                )}
-              </Col>
-            </Row>
-          </FormItem>
+
           <FormItem>
             <Row gutter={4}>
               <Col span={5}><div>用户名：</div></Col>
@@ -466,18 +450,33 @@ class Register extends Component {
             </Row>
           </FormItem>
           <FormItem>
+            <Row gutter={4}>
+              <Col span={9}><div>委托编号前四位：</div></Col>
+              <Col span={15}>
+                {getFieldDecorator('certcode', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'validation.certcode.required' }),
+                    },
+                  ],
+                })(
+                  <Input size="large" placeholder={formatMessage({ id: 'form.certcode.placeholder' })} />
+                )}
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem>
             <Button
               size="large"
               loading={submitting}
               className={styles.submit}
               type="primary"
               htmlType="submit"
+              style={{width:'100%'}}
             >
               <FormattedMessage id="app.register.register" />
             </Button>
-            <Link className={styles.login} to="/User/Login">
-              <FormattedMessage id="app.register.sign-in" />
-            </Link>
           </FormItem>
         </Form>
       </div>

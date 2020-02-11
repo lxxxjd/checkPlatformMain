@@ -40,7 +40,7 @@ export default {
   'validation.standard.required': '请输入衡量标准',
   'username is repeated':"用户名已存在",
   'validation.company.required':'请输入公司名',
-  'validation.certcode.required':'请输入certCode',
+  'validation.certcode.required':'请输入委托编号前四位',
   'validation.username.required':'请输入一个用户名',
   'validation.contact.required':'请输入一个联系人',
   'validation.userExist.repeated':'用户名重复',
