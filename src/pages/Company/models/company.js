@@ -1,6 +1,9 @@
 import {getPreCompanyList,addPreCompany,updatePreCompany,deletePreCompany,createAccount,
-  getCompanyList,addCompany,updateCompany,deleteCompany} from '@/services/company';
+  getCompanyList,addCompany,updateCompany,deleteCompany,} from '@/services/company';
 import {getCNASCheckFourCertCodeListInfo} from '@/services/cnas';
+
+import {addDefaultProject} from '@/services/CheckProject';
+import {addDefaultInvoiceTitle} from '@/services/invoiceTitle';
 
 export default {
   namespace: 'company',
@@ -16,6 +19,16 @@ export default {
     getCNASLevelFourListResult:{}, // 获得四级检查项目
   },
   effects: {
+
+    *addDefaultInvoiceTitle({ payload,callback }, { call, put }) {
+      const response = yield call(addDefaultInvoiceTitle, payload);
+      if (callback) callback(response.data);
+    },
+
+    *addDefaultProject({ payload,callback }, { call, put }) {
+      const response = yield call(addDefaultProject, payload);
+      if (callback) callback(response.data);
+    },
 
     *getCNASCheckFourCertCodeListInfo({ payload,callback }, { call, put }) {
       const response = yield call(getCNASCheckFourCertCodeListInfo, payload);

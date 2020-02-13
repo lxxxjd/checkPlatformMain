@@ -267,10 +267,9 @@ class Company extends PureComponent {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.setCNAS(text, record)}>编辑CNAS检查项目</a>
-          &nbsp;&nbsp;
-          <a onClick={() => this.modifyItem(text, record)}>修改</a>
-          &nbsp;&nbsp;
+          <a onClick={() => this.setInitSet(text, record)}>初始化默认设置</a>&nbsp;&nbsp;
+          <a onClick={() => this.setCNAS(text, record)}>编辑CNAS检查项目</a>&nbsp;&nbsp;
+          <a onClick={() => this.modifyItem(text, record)}>修改</a>&nbsp;&nbsp;
           <a onClick={() => this.deleteItem(text, record)}>删除</a>
         </Fragment>
       ),
@@ -288,6 +287,44 @@ class Company extends PureComponent {
     });
   };
 
+  setInitSet =(text)=>{
+    Modal.confirm({
+      title: '确定为公司初始化基本配置吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        const { dispatch } = this.props;
+        const params = {
+          certCode : text.certcode,
+        };
+        dispatch({
+          type: 'company/addDefaultProject',
+          payload: params,
+          callback: (response) => {
+            if (response==="success"){
+              message.success("初始化检查项目成功");
+              dispatch({
+                type: 'company/addDefaultInvoiceTitle',
+                payload: params,
+                callback: (response2) => {
+                  console.log(response2);
+                  if (response2==="success"){
+                    message.success("初始化公司发票信息成功");
+                  }else{
+                    message.error("初始化公司发票信息失败");
+                  }
+                }
+              });
+            }else{
+              message.error("初始化检查项目失败");
+            }
+          }
+        });
+      },
+    });
+
+  };
+
 
   init =()=>{
     const { dispatch } = this.props;
@@ -302,7 +339,7 @@ class Company extends PureComponent {
         }
       }
     });
-  }
+  };
 
   handleFormReset = () => {
     const { form } = this.props;
