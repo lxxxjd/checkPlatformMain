@@ -272,7 +272,7 @@ class PlatformRegister extends Component {
     return (
       <div className={styles.main}>
         <h3>
-          <FormattedMessage id="app.register.register" />
+            平台用户注册
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>

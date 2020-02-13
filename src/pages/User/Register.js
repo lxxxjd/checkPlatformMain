@@ -263,7 +263,7 @@ class Register extends Component {
     return (
       <div className={styles.main}>
         <h3>
-          <FormattedMessage id="app.register.register" />
+          检验机构注册申请
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
