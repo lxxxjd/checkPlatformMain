@@ -34,6 +34,7 @@ export default {
   'menu.UserManage.CustomsUser':'海关用户',
   'menu.UserManage.ContactUser':'委托人用户',
   'menu.UserManage.CnasUser':'CNAS用户',
+  'menu.UserManage.UserManage':'机构用户',
 
 
   'menu.dashboard': 'Dashboard',

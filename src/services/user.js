@@ -68,3 +68,59 @@ export async function updatePlatformUser(params) {
 
 
 
+
+export async function getAllUsers(params) {
+  return request(`/api/user/getAllUsers`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function updateUser(params) {
+  return request(`/api/user/updateUser`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function addUser(params) {
+  return request(`/api/user/addUser`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function deleteUser(params) {
+  return request(`/api/user/deleteUser`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+
+export async function getUrl(params) {
+  return request(`/api/cert_report/get_pdf?osspath=${params.url}`);
+}
+
+export async function verityUserNameC(params) {
+  return request(`/api/user/check_user_namec?certCode=${params.certCode}&nameC=${params.nameC}`);
+}
+
+// 部门管理
+export async function getDepartmentList(params) {
+  return request(`/api/department/get_departmentList`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+

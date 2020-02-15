@@ -179,6 +179,13 @@ export default [
             name: 'CustomsUser',
             component: './UserManage/CustomsUser',
           },
+
+          {
+            path: '/UserManage/UserManage',
+            name: 'UserManage',
+            component: './UserManage/UserManage',
+          },
+
         ],
       },
 

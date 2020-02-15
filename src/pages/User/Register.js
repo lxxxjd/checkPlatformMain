@@ -143,7 +143,11 @@ class Register extends Component {
                     if(response2){
                       // 请求服务成功
                       if(response2 === "success"){
-                        message.success("登记成功,平台在审核中，审核结果会和您联系");
+                        Modal.info({
+                          title: '登记成功,平台在审核中，审核结果会和您联系',
+                          okText:"知道了",
+                          onOk() {},
+                        });
                       }else if(response2 === "手机号未验证"){
                         message.error("手机号未验证，请先验证手机号码");
                       } else if(response2 === "公司重复注册"){
