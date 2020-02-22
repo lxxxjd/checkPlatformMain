@@ -20,19 +20,6 @@ export default [
     ],
   },
 
-  // user
-  {
-    path: '/Home',
-    component: '../layouts/BlankLayout',
-    routes: [
-      { path: '/Home', redirect: '/Home/HomePage' },
-      { path: '/Home/HomePage', name: 'HomePage', component: './Home/HomePage' },
-
-      {
-        component: '404',
-      },
-    ],
-  },
 
   // app
   {
@@ -84,38 +71,6 @@ export default [
             hideInMenu: 'true',//添加页不需要在menu上显示
           },
 
-          //
-          //
-          //
-          // {
-          //   path: '/Cargo/CNASTwo',
-          //   name: 'CNASTwo',
-          //   component: './Cargo/CNASTwo',
-          //   hideInMenu: 'true',//添加页不需要在menu上显示
-          // },
-          //
-          // {
-          //   path: '/Cargo/CNASThree',
-          //   name: 'CNASThree',
-          //   component: './Cargo/CNASThree',
-          //   hideInMenu: 'true',//添加页不需要在menu上显示
-          // },
-          //
-          //
-          // {
-          //   path: '/Cargo/CNASOne',
-          //   name: 'CNASOne',
-          //   component: './Cargo/CNASOne',
-          // },
-          //
-          // {
-          //   path: '/Cargo/CNASFour',
-          //   name: 'CNASFour',
-          //   component: './Cargo/CNASFour',
-          //   hideInMenu: 'true',//添加页不需要在menu上显示
-          // },
-
-
         ],
       },
 
@@ -151,6 +106,21 @@ export default [
           },
         ],
       },
+
+
+      {
+        path: '/CustomManage',
+        icon: 'profile',
+        name: 'CustomManage',
+        routes: [
+          {
+            path: '/CustomManage/Custom',
+            name: 'Custom',
+            component: './CustomManage/Custom',
+          },
+        ],
+      },
+
 
 
       {

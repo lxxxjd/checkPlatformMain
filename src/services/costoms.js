@@ -2,7 +2,12 @@ import request from '@/utils/request';
 import { stringify } from 'qs';
 
 
-// getCustomsList,addCustoms,updateCustoms,deleteCustoms
+
+
+export async function getCustomsListByType() {
+  return request(`/api/Customs/getCustomsListByType`);
+}
+
 export async function getCustomsList(params) {
   return request(`/api/Customs/getCustomsList`,{
     method: 'POST',

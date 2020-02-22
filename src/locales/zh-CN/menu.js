@@ -36,6 +36,9 @@ export default {
   'menu.UserManage.CnasUser':'CNAS用户',
   'menu.UserManage.UserManage':'机构用户',
 
+  'menu.CustomManage':'海关管理',
+  'menu.CustomManage.Custom':'海关字典',
+
 
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': '分析页',
