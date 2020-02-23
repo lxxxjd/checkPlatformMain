@@ -27,7 +27,7 @@ const { Option } = Select;
 
 // 修改的Form
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleEdit, handleModalVisible,modalInfo,dispatch } = props;
+  const { modalVisible, form, handleEdit, handleModalVisible,modalInfo,customsOptions } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -85,6 +85,9 @@ const CreateForm = Form.create()(props => {
         })(<Input placeholder="请输入手机" />)}
       </FormItem>
 
+
+
+
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="可见性">
         {form.getFieldDecorator('isvisible', {
           initialValue: modalInfo.isvisible,
@@ -102,16 +105,61 @@ const CreateForm = Form.create()(props => {
         )}
       </FormItem>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司">
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="所在单位">
         {form.getFieldDecorator('company', {
           initialValue: modalInfo.company,
           rules: [
             {
               required: true,
-              message: "请输入公司",
+              message: "请输入所在单位",
             },
           ],
-        })(<Input placeholder="请输入公司" />)}
+        })(
+          <Select style={{width:'100%'}} placeholder="请输入所在单位">
+            {customsOptions}
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="职务">
+        {form.getFieldDecorator('workduty', {
+          initialValue: modalInfo.workduty,
+          rules: [
+            {
+              required: true,
+              message: "职务",
+            },
+
+          ],
+        })(
+          <Select style={{width:'100%'}} placeholder="请选择公司职务">
+            <Option value="总经理">总经理</Option>
+            <Option value="副总经理">副总经理</Option>
+            <Option value="总监">总监</Option>
+            <Option value="经理">经理</Option>
+            <Option value="副经理">副经理</Option>
+            <Option value="产品经理">产品经理</Option>
+            <Option value="主管">主管</Option>
+            <Option value="员工">员工</Option>
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="角色">
+        {form.getFieldDecorator('role', {
+          initialValue: modalInfo.role,
+          rules: [
+            {
+              required: true,
+              message: "角色",
+            },
+          ],
+        })(
+          <Select style={{width:'100%'}} placeholder="请选择角色，可以选择一项或多项" mode="tags">
+            <Option value="管理员">管理员</Option>
+            <Option value="审查员">审查员</Option>
+          </Select>
+        )}
       </FormItem>
 
 
@@ -140,7 +188,7 @@ const CreateForm = Form.create()(props => {
 
 
 const AddForm = Form.create()(props => {
-  const { addModalVisible, form, handleAdd, addHandleModalVisible,dispatch} = props;
+  const { addModalVisible, form, handleAdd, addHandleModalVisible,dispatch,customsOptions} = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err){
@@ -190,7 +238,7 @@ const AddForm = Form.create()(props => {
             },
           ],
         })(
-          <Input size="large" placeholder={formatMessage({ id: 'form.username.placeholder' })} />
+          <Input placeholder="请输入用户名" />
         )}
       </FormItem>
 
@@ -243,15 +291,58 @@ const AddForm = Form.create()(props => {
         )}
       </FormItem>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="公司">
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="所在单位">
         {form.getFieldDecorator('company', {
           rules: [
             {
               required: true,
-              message: "请输入公司",
+              message: "请输入所在单位",
             },
           ],
-        })(<Input placeholder="请输入公司" />)}
+        })(
+          <Select style={{width:'100%'}} placeholder="请输入所在单位">
+            {customsOptions}
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="职务">
+        {form.getFieldDecorator('workduty', {
+          rules: [
+            {
+              required: true,
+              message: "职务",
+            },
+
+          ],
+        })(
+          <Select style={{width:'100%'}} placeholder="请选择公司职务">
+            <Option value="总经理">总经理</Option>
+            <Option value="副总经理">副总经理</Option>
+            <Option value="总监">总监</Option>
+            <Option value="经理">经理</Option>
+            <Option value="副经理">副经理</Option>
+            <Option value="产品经理">产品经理</Option>
+            <Option value="主管">主管</Option>
+            <Option value="员工">员工</Option>
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="角色">
+        {form.getFieldDecorator('role', {
+          rules: [
+            {
+              required: true,
+              message: "角色",
+            },
+          ],
+        })(
+          <Select style={{width:'100%'}} placeholder="请选择角色，可以选择一项或多项" mode="tags">
+            <Option value="管理员">管理员</Option>
+            <Option value="审查员">审查员</Option>
+          </Select>
+        )}
       </FormItem>
 
 
@@ -289,6 +380,8 @@ class CustomsUser extends PureComponent {
     addModalVisible:false,
     modalInfo :{},
     dataSource:[],
+
+    customs:[],
   };
 
   columns = [
@@ -313,9 +406,20 @@ class CustomsUser extends PureComponent {
       dataIndex: 'tel',
     },
     {
-      title: '公司',
+      title: '所在单位',
       dataIndex: 'company',
     },
+
+    {
+      title: '职务',
+      dataIndex: 'workduty',
+    },
+
+    {
+      title: '角色',
+      dataIndex: 'role',
+    },
+
 
     {
       title: '审核状态',
@@ -349,11 +453,22 @@ class CustomsUser extends PureComponent {
       type: 'CustomsUser/getCustomsUserList',
       payload: params,
       callback: (response) => {
-        if (response){
+        if (response.code===200){
           this.state.dataSource = response.data;
         }
       }
     });
+
+    dispatch({
+      type: 'CustomsUser/getCustomsList',
+      payload: params,
+      callback: (response) => {
+        if (response.code===200){
+          this.state.customs = response.data;
+        }
+      }
+    });
+
   };
 
   handleFormReset = () => {
@@ -391,29 +506,45 @@ class CustomsUser extends PureComponent {
   };
 
   modifyItem = text => {
+    var temp = Object.assign({}, text);
+    if(temp.role!==undefined && temp.role!==null){
+      const roles = temp.role.split(' ');
+      temp.role = roles;
+    }else{
+      temp.role =[];
+    }
+
     this.setState({
-      modalInfo:text,
+      modalInfo:temp,
     });
     this.handleModalVisible(true);
   };
 
   deleteItem = text =>{
-    const { dispatch } = this.props;
-    const values = {
-      ...text
-    };
-    dispatch({
-      type: 'CustomsUser/deleteCustomsUser',
-      payload:values,
-      callback: (response) => {
-        if(response==="success"){
-          this.init();
-          message.success("删除成功");
-        } else{
-          message.success("删除失败");
-        }
+    Modal.confirm({
+      title: '确定删除吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        const { dispatch } = this.props;
+        const values = {
+          ...text
+        };
+        dispatch({
+          type: 'CustomsUser/deleteCustomsUser',
+          payload:values,
+          callback: (response) => {
+            if(response==="success"){
+              this.init();
+              message.success("删除成功");
+            } else{
+              message.success("删除失败");
+            }
+          }
+        });
       }
     });
+
   };
 
 
@@ -446,6 +577,8 @@ class CustomsUser extends PureComponent {
     prams.company =  fields.company;
     prams.nameC =  fields.nameC;
     prams.ispass =  fields.ispass;
+    prams.workduty =  fields.workduty;
+    prams.role =  fields.role;
     const values = {
       ...prams
     };
@@ -478,7 +611,6 @@ class CustomsUser extends PureComponent {
       message.success("添加用户已存在");
       return;
     }
-
     dispatch({
       type: 'CustomsUser/addCustomsUser',
       payload:values,
@@ -519,7 +651,7 @@ class CustomsUser extends PureComponent {
                   <Option value="password">密码</Option>
                   <Option value="isvisible">电话可见性</Option>
                   <Option value="tel">电话</Option>
-                  <Option value="company">公司名称</Option>
+                  <Option value="company">所在单位名称</Option>
                 </Select>
               )}
             </Form.Item>
@@ -557,7 +689,8 @@ class CustomsUser extends PureComponent {
       dispatch,
     } = this.props;
 
-    const {  modalVisible,modalInfo,addModalVisible,dataSource} = this.state;
+    const {  modalVisible,modalInfo,addModalVisible,dataSource,customs} = this.state;
+    const customsOptions = customs.map(d => <Option key={d.customsName} value={d.customsName}>{d.customsName}</Option>);
     const parentMethods = {
       handleEdit: this.handleEdit,
       handleAdd:this.handleAdd,
@@ -570,8 +703,8 @@ class CustomsUser extends PureComponent {
       <PageHeaderWrapper>
         <Card bordered={false} size="small">
           <div className={styles.tableList}>
-            <CreateForm {...parentMethods} modalVisible={modalVisible} modalInfo={modalInfo} dispatch={dispatch} />
-            <AddForm {...parentMethods} addModalVisible={addModalVisible} dispatch={dispatch} />
+            <CreateForm {...parentMethods} modalVisible={modalVisible} modalInfo={modalInfo} dispatch={dispatch} customsOptions={customsOptions} />
+            <AddForm {...parentMethods} addModalVisible={addModalVisible} dispatch={dispatch} customsOptions={customsOptions} />
             <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
             <Table
               size="middle"

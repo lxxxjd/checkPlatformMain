@@ -1,4 +1,5 @@
 import {getCustomsUsers,updateCustomsUser,addCustomsUser,deleteCustomsUser,getRepeatUsername} from '@/services/CustomsUser';
+import {getCustomsList} from '@/services/costoms';
 
 export default {
   namespace: 'CustomsUser',
@@ -10,6 +11,10 @@ export default {
       if (callback) callback(response.data);
     },
 
+    *getCustomsList({ payload,callback }, { call, put }) {
+      const response = yield call(getCustomsList, payload);
+      if (callback) callback(response);
+    },
 
     *getCustomsUserList({ payload,callback }, { call, put }) {
       const response = yield call(getCustomsUsers, payload);

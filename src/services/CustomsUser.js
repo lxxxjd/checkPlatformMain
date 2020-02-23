@@ -12,6 +12,9 @@ export async function getCustomsUsers(params) {
 }
 
 export async function updateCustomsUser(params) {
+  if(params.role!==undefined && params.role!==null){
+    params.role = params.role.join(" ");
+  }
   return request(`/api/customsuser/updateCustomsUser`,{
     method: 'POST',
     data: {
@@ -20,6 +23,9 @@ export async function updateCustomsUser(params) {
   });
 }
 export async function addCustomsUser(params) {
+  if(params.role!==undefined && params.role!==null){
+    params.role = params.role.join(" ");
+  }
   return request(`/api/customsuser/addCustomsUser`,{
     method: 'POST',
     data: {
@@ -40,6 +46,7 @@ export async function deleteCustomsUser(params) {
 export async function getRepeatUsername(params) {
   return request(`/api/customsuser/getRepeatUsername?username=${params.username}`);
 }
+
 
 
 
