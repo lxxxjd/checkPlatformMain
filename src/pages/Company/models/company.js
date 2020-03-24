@@ -1,9 +1,12 @@
 import {getPreCompanyList,addPreCompany,updatePreCompany,deletePreCompany,createAccount,
-  getCompanyList,addCompany,updateCompany,deleteCompany,} from '@/services/company';
+  getCompanyList,addCompany,updateCompany,deleteCompany,passPreCompany,nopassPreCompany,getManRecord,getUrl,getCompany,getParent,isExistCompanyBycertcode} from '@/services/company';
 import {getCNASCheckFourCertCodeListInfo} from '@/services/cnas';
 
 import {addDefaultProject} from '@/services/CheckProject';
 import {addDefaultInvoiceTitle} from '@/services/invoiceTitle';
+
+import { getUserByCertCodeAndName} from '@/services/user';
+import {getRecordCompanyList} from '@/services/Recordinfo';
 
 export default {
   namespace: 'company',
@@ -19,6 +22,45 @@ export default {
     getCNASLevelFourListResult:{}, // 获得四级检查项目
   },
   effects: {
+
+
+    // 海关复制过来
+    *getRecordCompanyList({ payload,callback }, { call, put }) {
+      const response = yield call(getRecordCompanyList, payload);
+      if (callback) callback(response);
+    },
+
+
+    *isExistCompanyBycertcode({ payload,callback }, { call, put }) {
+      const response = yield call(isExistCompanyBycertcode, payload);
+      if (callback) callback(response.data);
+    },
+
+    *getCompany({ payload,callback }, { call, put }) {
+      const response = yield call(getCompany, payload);
+      if (callback) callback(response);
+    },
+
+    *getParent({ payload,callback }, { call, put }) {
+      const response = yield call(getParent, payload);
+      if (callback) callback(response);
+    },
+
+    *getManRecord({ payload,callback }, { call, put }) {
+      const response = yield call(getManRecord, payload);
+      if (callback) callback(response);
+    },
+
+    *getUrl({ payload,callback }, { call, put }) {
+      const response = yield call(getUrl, payload);
+      if (callback) callback(response);
+    },
+
+    *getUserByCertCodeAndName({ payload,callback }, { call, put }) {
+      const response = yield call(getUserByCertCodeAndName, payload);
+      if (callback) callback(response);
+    },
+
 
     *addDefaultInvoiceTitle({ payload,callback }, { call, put }) {
       const response = yield call(addDefaultInvoiceTitle, payload);
@@ -65,6 +107,26 @@ export default {
       });
       if (callback) callback(response.data);
     },
+
+    *passPreCompany({ payload,callback }, { call, put }) {
+      const response = yield call(passPreCompany, payload);
+      yield put({
+        type: 'updatePreCompanyResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
+
+
+    *nopassPreCompany({ payload,callback }, { call, put }) {
+      const response = yield call(nopassPreCompany, payload);
+      yield put({
+        type: 'updatePreCompanyResult',
+        payload: response,
+      });
+      if (callback) callback(response.data);
+    },
+
 
 
     *deletePreCompany({ payload,callback }, { call, put }) {

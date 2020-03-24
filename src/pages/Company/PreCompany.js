@@ -286,14 +286,13 @@ class PreCompany extends PureComponent {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.pass(text, record)}>审核通过</a>
-          &nbsp;&nbsp;
-          <a onClick={() => this.nopass(text, record)}>审核退回</a>
-          &nbsp;&nbsp;
-          {text.status==="通过"?[<a onClick={() => this.createAccount(text, record)}>创建账号&nbsp;&nbsp;</a>]:[]}
-          &nbsp;&nbsp;
-          <a onClick={() => this.modifyItem(text, record)}>修改</a>
-          &nbsp;&nbsp;
+          {text.status==="未审核"?[<a onClick={() => this.createAccount(text, record)}>创建账号&nbsp;&nbsp;</a>]:[]}
+          {text.status==="创建账号成功"||text.status==="审核退回"?[<a onClick={() => this.pass(text, record)}>审核通过&nbsp;&nbsp;</a>]:[]}
+          {text.status==="审核通过"?[<a onClick={() => this.nopass(text, record)}>审核退回&nbsp;&nbsp;</a>]:[]}
+          {text.status==="创建账号成功"||text.status==="审核通过"||text.status==="审核退回"?[<a onClick={() => this.toUserInfo(text, record)}>人员信息&nbsp;&nbsp;</a>]:[]}
+          {text.status==="创建账号成功"||text.status==="审核通过"||text.status==="审核退回"?[<a onClick={() => this.toIntrusment(text, record)}>仪器设备&nbsp;&nbsp;</a>]:[]}
+          {text.status==="创建账号成功"||text.status==="审核通过"||text.status==="审核退回"?[<a onClick={() => this.toCompanyinfo(text, record)}>公司信息&nbsp;&nbsp;</a>]:[]}
+          <a onClick={() => this.modifyItem(text, record)}>编辑&nbsp;&nbsp;</a>
           <a onClick={() => this.deleteItem(text, record)}>删除</a>
         </Fragment>
       ),
@@ -319,13 +318,14 @@ class PreCompany extends PureComponent {
         }
       }
     });
-  }
+  };
 
   handleFormReset = () => {
     const { form } = this.props;
     form.resetFields();
     this.init();
-  }
+  };
+
 
   handleSearch = e=> {
     e.preventDefault();
@@ -346,14 +346,88 @@ class PreCompany extends PureComponent {
         }
       });
     });
-  }
+  };
 
   isValidDate =date=> {
     if(date !==undefined && date !==null ){
       return <span>{moment(date).format('YYYY-MM-DD')}</span>;
     }
     return [];
-  }
+  };
+
+
+  toUserInfo = text => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'company/isExistCompanyBycertcode',
+      payload:{certcode:text.certcode},
+      callback: (response) => {
+        if(response==="success"){
+          sessionStorage.setItem('companyusermanage_certcode',text.certcode);
+          router.push({
+            pathname:'/Company/CompanyUserManage',
+          });
+        } else {
+          Modal.error({
+            title: '该公司不存在！',
+            content:'该公司信息可能被删除！',
+            okText:"知道了",
+            onOk() {
+            },
+          });
+        }
+      }
+    });
+  };
+
+  toIntrusment = text => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'company/isExistCompanyBycertcode',
+      payload:{certcode:text.certcode},
+      callback: (response) => {
+        if(response==="success"){
+          sessionStorage.setItem('companyusermanage_certcode',text.certcode);
+          router.push({
+            pathname:'/Company/Intrusment',
+          });
+        } else {
+          Modal.error({
+            title: '该公司不存在！',
+            content:'该公司信息可能被删除！',
+            okText:"知道了",
+            onOk() {
+            },
+          });
+        }
+      }
+    });
+  };
+
+  toCompanyinfo = text => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'company/isExistCompanyBycertcode',
+      payload:{certcode:text.certcode},
+      callback: (response) => {
+        if(response==="success"){
+          sessionStorage.setItem('companyusermanage_certcode',text.certcode);
+          router.push({
+            pathname:'/Company/CompanyInfo',
+          });
+        } else {
+          Modal.error({
+            title: '该公司不存在！',
+            content:'该公司信息可能被删除！',
+            okText:"知道了",
+            onOk() {
+            },
+          });
+        }
+      }
+    });
+  };
+
 
   modifyItem = text => {
     this.setState({
@@ -363,72 +437,104 @@ class PreCompany extends PureComponent {
   };
 
   pass = (text) =>{
-    this.review(text,"通过","操作成功","操作不成功")
-  }
+    const { dispatch } = this.props;
+    Modal.confirm({
+      title: '确定审核通过吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        dispatch({
+          type: 'company/passPreCompany',
+          payload:text,
+          callback: (response) => {
+            if(response==="success"){
+              message.success("操作成功");
+              this.init();
+            } else {
+              message.success("操作失败");
+            }
+          }
+        });
+      }
+    });
+  };
 
   nopass = (text) =>{
-    this.review(text,"不通过","操作成功","操作不成功")
-  }
+    const { dispatch } = this.props;
+    Modal.confirm({
+      title: '确定审核退回吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        dispatch({
+          type: 'company/nopassPreCompany',
+          payload:text,
+          callback: (response) => {
+            if(response==="success"){
+              message.success("操作成功");
+              this.init();
+            } else {
+              message.success("操作失败");
+            }
+          }
+        });
+      }
+    });
+  };
 
   createAccount =(text) =>{
     const { dispatch } = this.props;
-    const values = {
-      ...text
-    };
-    dispatch({
-      type: 'company/createAccount',
-      payload:values,
-      callback: (response) => {
-        if(response==="success"){
-          message.success("创建成功");
-          this.init();
-        } else {
-          message.success("创建失败");
-        }
+    Modal.confirm({
+      title: '确定创建账号吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        const values = {
+          ...text
+        };
+        dispatch({
+          type: 'company/createAccount',
+          payload:values,
+          callback: (response) => {
+            if(response==="success"){
+              message.success("创建成功");
+              this.init();
+            } else {
+              message.success("创建失败");
+            }
+          }
+        });
       }
     });
-  }
-
-  review = (text,status,successMessage,errorMessage) =>{
-    const { dispatch } = this.props;
-    let prams = text;
-    prams.status =  status;
-    const values = {
-      ...prams
-    };
-    dispatch({
-      type: 'company/updatePreCompany',
-      payload:values,
-      callback: (response) => {
-        if(response==="success"){
-          message.success(successMessage);
-          this.init();
-        } else {
-          message.success(errorMessage);
-        }
-      }
-    });
-  }
+  };
 
 
   deleteItem = text =>{
     const { dispatch } = this.props;
-    const values = {
-      ...text
-    };
-    dispatch({
-      type: 'company/deletePreCompany',
-      payload:values,
-      callback: (response) => {
-        if(response==="success"){
-          this.init();
-          message.success("删除成功");
-        } else{
-          message.success("删除失败");
-        }
+    Modal.confirm({
+      title: '确定删除吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        const values = {
+          ...text
+        };
+        dispatch({
+          type: 'company/deletePreCompany',
+          payload:values,
+          callback: (response) => {
+            if(response==="success"){
+              this.init();
+              message.success("删除成功");
+            } else{
+              message.success("删除失败");
+            }
+          }
+        });
       }
     });
-  }
+
+  };
 
 
   addItem = () => {

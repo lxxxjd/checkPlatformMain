@@ -124,3 +124,9 @@ export async function getDepartmentList(params) {
   });
 }
 
+
+
+export async function getUserByCertCodeAndName(params) {
+  return request(`/api/user/getUserByCertCodeAndName?certCode=${params.certCode}&nameC=${params.nameC}`);
+}
+

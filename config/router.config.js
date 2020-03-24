@@ -104,6 +104,37 @@ export default [
             component: './Company/UserInfo',
             hideInMenu: 'true',//添加页不需要在menu上显示
           },
+
+
+          {
+            path: '/Company/CompanyUserManage',
+            name: 'CompanyUserManage',
+            component: './Company/CompanyUserManage',
+            hideInMenu: 'true',//添加页不需要在menu上显示
+          },
+
+          {
+            path: '/Company/Intrusment',
+            name: 'Intrusment',
+            component: './Company/Intrusment',
+            hideInMenu: 'true',//添加页不需要在menu上显示
+          },
+
+          {
+            path: '/Company/CompanyInfo',
+            name: 'CompanyInfo',
+            component: './Company/CompanyInfo',
+            hideInMenu: 'true',//添加页不需要在menu上显示
+          },
+
+          {
+            path: '/Company/ManDetail',
+            name: 'ManDetail',
+            component: './Company/ManDetail',
+            hideInMenu: 'true',//添加页不需要在menu上显示
+          },
+
+
         ],
       },
 

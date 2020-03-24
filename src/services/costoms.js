@@ -177,6 +177,59 @@ export async function deleteCNASLevelFour(params) {
 
 
 
+export async function addReadRecord(params) {
+  return request(`/api/readrecord/addReadRecord`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function getPreCustomReceiveListByCustomsName(params) {
+  return request(`/api/PreCustomReceive/getPreCustomReceiveListByCustomsName`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function acceptReceive(params) {
+  return request(`/api/PreCustomReceive/acceptReceive`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function refuseReceive(params) {
+  return request(`/api/PreCustomReceive/refuseReceive`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function getCustomReceiveListByCustomsName(params) {
+  return request(`/api/CustomReceive/getCustomReceiveListByCustomsName`,{
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+
+
+
+
+
+
+
+
 
 
 

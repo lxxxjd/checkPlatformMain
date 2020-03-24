@@ -264,11 +264,16 @@ class Company extends PureComponent {
     },
 
     {
+      title: '状态',
+      dataIndex: 'status',
+    },
+
+    {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.setInitSet(text, record)}>初始化默认设置</a>&nbsp;&nbsp;
-          <a onClick={() => this.setCNAS(text, record)}>编辑CNAS检查项目</a>&nbsp;&nbsp;
+          <a onClick={() => this.setInitSet(text, record)}>初始化</a>&nbsp;&nbsp;
+          <a onClick={() => this.setCNAS(text, record)}>CNAS项目</a>&nbsp;&nbsp;
           <a onClick={() => this.modifyItem(text, record)}>修改</a>&nbsp;&nbsp;
           <a onClick={() => this.deleteItem(text, record)}>删除</a>
         </Fragment>
@@ -345,7 +350,7 @@ class Company extends PureComponent {
     const { form } = this.props;
     form.resetFields();
     this.init();
-  }
+  };
 
   handleSearch = e=> {
     e.preventDefault();
