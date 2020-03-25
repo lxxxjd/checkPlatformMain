@@ -252,14 +252,14 @@ class PreCompany extends PureComponent {
       title: '公司名称',
       dataIndex: 'company',
     },
-    {
-      title: '用户名',
-      dataIndex: 'username',
-    },
-    {
-      title: '密码',
-      dataIndex: 'password',
-    },
+    // {
+    //   title: '用户名',
+    //   dataIndex: 'username',
+    // },
+    // {
+    //   title: '密码',
+    //   dataIndex: 'password',
+    // },
     {
       title: '公司编号',
       dataIndex: 'certcode',
