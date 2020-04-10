@@ -135,7 +135,7 @@ class CargoList extends PureComponent {
   }
 
   init =()=>{
-    const user = JSON.parse(localStorage.getItem("userinfo"));
+    const user = JSON.parse(localStorage.getItem("main_userinfo"));
     const { dispatch } = this.props;
     const params = {
       certCode:user.certCode,
@@ -177,7 +177,7 @@ class CargoList extends PureComponent {
     const { dispatch, form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      const user = JSON.parse(localStorage.getItem("userinfo"));
+      const user = JSON.parse(localStorage.getItem("main_userinfo"));
       const values = {
         ...fieldsValue,
         kind :fieldsValue.kind.trim(),
@@ -281,7 +281,7 @@ class CargoList extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const user = JSON.parse(localStorage.getItem("userinfo"));
+    const user = JSON.parse(localStorage.getItem("main_userinfo"));
     const values = {
       ...fields,
       certCode:user.certCode,

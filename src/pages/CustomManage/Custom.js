@@ -245,7 +245,7 @@ class Custom extends PureComponent {
     const { dispatch, form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      const user = JSON.parse(localStorage.getItem("userinfo"));
+      const user = JSON.parse(localStorage.getItem("main_userinfo"));
       const values = {
         kind :fieldsValue.kind.trim(),
         value: fieldsValue.value.trim(),
@@ -373,7 +373,7 @@ class Custom extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const user = JSON.parse(localStorage.getItem("userinfo"));
+    const user = JSON.parse(localStorage.getItem("main_userinfo"));
     const values = {
       ...fields,
     };

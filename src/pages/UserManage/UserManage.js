@@ -655,7 +655,7 @@ class UserManage extends PureComponent {
 
   verityUserNameC = (rule, value, callback) => {
     const { dispatch } = this.props;
-    const clientuser = JSON.parse(localStorage.getItem("userinfo"));
+    const clientuser = JSON.parse(localStorage.getItem("main_userinfo"));
     dispatch({
       type: 'clientuser/verityUserNameC',
       payload:{
@@ -677,7 +677,7 @@ class UserManage extends PureComponent {
 
 
   init =()=>{
-    const clientuser = JSON.parse(localStorage.getItem("userinfo"));
+    const clientuser = JSON.parse(localStorage.getItem("main_userinfo"));
     const { dispatch } = this.props;
     const params = {
       certCode:clientuser.certCode
@@ -902,7 +902,7 @@ class UserManage extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const clientuser = JSON.parse(localStorage.getItem("userinfo"));
+    const clientuser = JSON.parse(localStorage.getItem("main_userinfo"));
     const values = {
       ...fields,
       certCode:clientuser.certCode,

@@ -22,7 +22,7 @@ class SearchItem  extends PureComponent {
 	handleFormReset = () => {
 		const { form ,dispatch} = this.props;
 		form.resetFields();
-		const user = JSON.parse(localStorage.getItem("userinfo"));
+		const user = JSON.parse(localStorage.getItem("main_userinfo"));
 		const cargoname =  sessionStorage.getItem('cargoname');
 	    const params = {
 	      cargoname,
@@ -38,7 +38,7 @@ class SearchItem  extends PureComponent {
 		const { dispatch, form } = this.props;
 		form.validateFields((err, fieldsValue) => {
 		  if (err) return;
-		  const user = JSON.parse(localStorage.getItem("userinfo"));
+		  const user = JSON.parse(localStorage.getItem("main_userinfo"));
 		  const cargoname =  sessionStorage.getItem('cargoname');
 		  const values = {
 		    ...fieldsValue,

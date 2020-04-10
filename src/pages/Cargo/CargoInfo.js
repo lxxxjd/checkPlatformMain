@@ -96,7 +96,7 @@ class CargoInfo extends PureComponent {
 
 
   componentDidMount() {
-    // const user = JSON.parse(localStorage.getItem("userinfo"));
+    // const user = JSON.parse(localStorage.getItem("main_userinfo"));
     const { dispatch } = this.props;
     const params = {
       // certCode:user.certCode
@@ -157,7 +157,7 @@ class CargoInfo extends PureComponent {
     } = this.props;
     const { keyno } = this.state;
     validateFieldsAndScroll((error, values) => {
-      const user = JSON.parse(localStorage.getItem("userinfo"));
+      const user = JSON.parse(localStorage.getItem("main_userinfo"));
       values.checkCode = values.checkCode[2];
       if (!error) {
         // submit the values

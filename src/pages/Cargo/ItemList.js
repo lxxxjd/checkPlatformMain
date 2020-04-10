@@ -92,7 +92,7 @@ class ItemList extends PureComponent {
 
 
   componentDidMount() {
-    const user = JSON.parse(localStorage.getItem("userinfo"));
+    const user = JSON.parse(localStorage.getItem("main_userinfo"));
     const cargoname =  sessionStorage.getItem('cargoname');
     const { dispatch } = this.props;
     const params = {
@@ -137,7 +137,7 @@ class ItemList extends PureComponent {
     } = this.props;
     const { keyno } = this.state;
     validateFieldsAndScroll((error, values) => {
-      const user = JSON.parse(localStorage.getItem("userinfo"));
+      const user = JSON.parse(localStorage.getItem("main_userinfo"));
       const cargoname =  sessionStorage.getItem('cargoname');
       if (!error) {
         // submit the values

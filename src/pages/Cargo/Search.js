@@ -22,7 +22,7 @@ class Search  extends PureComponent {
 	handleFormReset = () => {
 		const { form ,dispatch} = this.props;
 		form.resetFields();
-		const user = JSON.parse(localStorage.getItem("userinfo"));
+		const user = JSON.parse(localStorage.getItem("main_userinfo"));
 	    const params = {
 	      certCode:user.certCode
 	    };
@@ -37,7 +37,7 @@ class Search  extends PureComponent {
 		const { dispatch, form } = this.props;
 		form.validateFields((err, fieldsValue) => {
 		  if (err) return;
-		  const user = JSON.parse(localStorage.getItem("userinfo"));
+		  const user = JSON.parse(localStorage.getItem("main_userinfo"));
 		  const values = {
 		    ...fieldsValue,
 		    certCode:user.certCode,

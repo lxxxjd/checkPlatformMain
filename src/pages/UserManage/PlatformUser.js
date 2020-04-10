@@ -451,7 +451,7 @@ class PlatformUser extends PureComponent {
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
-    const user = JSON.parse(localStorage.getItem("userinfo"));
+    const user = JSON.parse(localStorage.getItem("main_userinfo"));
     const values = {
       ...fields,
     };

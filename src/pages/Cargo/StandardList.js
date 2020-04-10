@@ -91,7 +91,7 @@ class StandardList extends PureComponent {
 
 
   componentDidMount() {
-    const user = JSON.parse(localStorage.getItem("userinfo"));
+    const user = JSON.parse(localStorage.getItem("main_userinfo"));
     const cargoname =  sessionStorage.getItem('cargoname');
     const item =  sessionStorage.getItem('item');
     const { dispatch } = this.props;
@@ -123,7 +123,7 @@ class StandardList extends PureComponent {
     } = this.props;
     const { keyno } = this.state;
     validateFieldsAndScroll((error, values) => {
-      const user = JSON.parse(localStorage.getItem("userinfo"));
+      const user = JSON.parse(localStorage.getItem("main_userinfo"));
       const cargoname =  sessionStorage.getItem('cargoname');
       const item =  sessionStorage.getItem('item');
       if (!error) {
