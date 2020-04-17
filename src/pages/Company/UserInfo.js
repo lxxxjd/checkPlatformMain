@@ -104,7 +104,7 @@ class UserInfo extends PureComponent {
 	              notification.open({
 	                message: '修改成功',
 	              });
-	              localStorage.setItem('userinfo',JSON.stringify(user));
+	              localStorage.setItem('main_userinfo',JSON.stringify(user));
 	              this.componentDidMount();
 	            } else {
 	              notification.open({
@@ -140,7 +140,7 @@ class UserInfo extends PureComponent {
 	                message: '修改成功',
 	              });
 	              this.setState({passwordVisible:false});
-	              localStorage.setItem('userinfo',JSON.stringify(user));
+	              localStorage.setItem('main_userinfo',JSON.stringify(user));
 	              this.componentDidMount();
 	            } else {
 	              notification.open({
@@ -184,7 +184,7 @@ class UserInfo extends PureComponent {
 			                message: '修改成功',
 			              });
 			              this.setState({phoneVisible:false});
-			              localStorage.setItem('userinfo',JSON.stringify(user));
+			              localStorage.setItem('main_userinfo',JSON.stringify(user));
 			              this.componentDidMount();
 			            } else {
 			              notification.open({
