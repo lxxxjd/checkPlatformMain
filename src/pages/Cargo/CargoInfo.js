@@ -38,6 +38,8 @@ class CargoInfo extends PureComponent {
     keyno: null,
     cnsOptions:[],
 
+    cargosort:[],
+
   };
 
   columns = [
@@ -116,6 +118,17 @@ class CargoInfo extends PureComponent {
       }
     });
 
+    dispatch({
+      type: 'dict/getCargoInfo',
+      payload: {},
+      callback: (response) => {
+        if(response.code ===200){
+          this.state.cargosort = response.data;
+        }
+      }
+    });
+
+
 
 
   }
@@ -143,6 +156,13 @@ class CargoInfo extends PureComponent {
     checkCode.push(text.checkCode.substring(0,2));
     checkCode.push(text.checkCode.substring(0,4));
     checkCode.push(text.checkCode);
+    if(text.cargosort!==undefined){
+      const cargosort = text.cargosort.split(" ");
+      form.setFieldsValue({
+        cargosort
+      });
+    }
+
     form.setFieldsValue({
       'cargonamec': text.cargonamec,
       'cargonamee': text.cargonamee,
@@ -157,18 +177,20 @@ class CargoInfo extends PureComponent {
     } = this.props;
     const { keyno } = this.state;
     validateFieldsAndScroll((error, values) => {
-      const user = JSON.parse(localStorage.getItem("main_userinfo"));
       values.checkCode = values.checkCode[2];
+      const params = {
+        cargonamec: values.cargonamec,
+        cargonamee: values.cargonamee,
+        checkCode: values.checkCode,
+        cargosort: values.cargosort.join(" "),
+        keyno,
+      };
       if (!error) {
         // submit the values
         if(keyno !== null){
           dispatch({
             type: 'dict/updateCargo',
-            payload: {
-              ...values,
-              keyno,
-              certCode:user.certCode,
-            },
+            payload:params,
             callback: (response) => {
               if (response.code === 200) {
                 notification.open({
@@ -187,10 +209,7 @@ class CargoInfo extends PureComponent {
         }else {
           dispatch({
             type: 'dict/addCargo',
-            payload: {
-              ...values,
-              certCode:user.certCode,
-            },
+            payload:params,
             callback: (response) => {
               if (response.code === 200) {
                 notification.open({
@@ -212,8 +231,11 @@ class CargoInfo extends PureComponent {
   };
 
   showAdd = () => {
+    const{form} = this.props;
+    form.resetFields();
     this.setState( { keyno : null } ) ;
     this.setState( { visible : true } );
+
   };
 
   handleCancel = () => {
@@ -253,7 +275,7 @@ class CargoInfo extends PureComponent {
           </div>
         </Card>
         <Modal
-            title="修改货物信息"
+            title="货物信息"
             visible={visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
@@ -277,8 +299,15 @@ class CargoInfo extends PureComponent {
                 {getFieldDecorator('checkCode', {
                   rules: [{ required: true, message: '选择CNAS分类' }],
                 })(
-                    <Cascader options={this.state.cnsOptions} placeholder="选择CNAS分类"/>
+                    <Cascader options={this.state.cnsOptions} placeholder="选择CNAS分类" />
                   )}
+              </Form.Item>
+              <Form.Item label="货物分类">
+                {getFieldDecorator('cargosort', {
+                  rules: [{ required: true, message: '选择货物分类' }],
+                })(
+                  <Cascader options={this.state.cargosort} placeholder="选择货物分类" />
+                )}
               </Form.Item>
             </Form>
           </Modal>

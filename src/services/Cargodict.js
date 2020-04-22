@@ -36,6 +36,12 @@ export async function getTestStandard(params) {
 export async function deleteItem(params) {
   return request(`/api/testItem/deleteItem?keyno=${params.keyno}`);
 }
+export async function getCargoInfo() {
+  return request(`/api/cargoSort2/getCargoInfo`);
+}
+
+
+
 
 export async function searchItemList(params) {
   return request(`/api/testItem/searchItemList?cargoname=${params.cargoname}&itemC=${params.itemC}`);
@@ -60,6 +66,8 @@ export async function updateTestStandard(params) {
     },
   });
 }
+
+
 
 export async function addTestStandard(params) {
   return request('/api/TestStandard/addTestStandard', {

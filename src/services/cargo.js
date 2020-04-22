@@ -11,6 +11,8 @@ export async function addCargoSort1(params) {
   });
 }
 
+
+
 export async function updateCargoSort1(params) {
   return request(`/api/cargoSort1/update_cargosort1`,{
     method: 'POST',
@@ -75,7 +77,6 @@ export async function deleteCargosort2(params) {
     },
   });
 }
-
 
 
 

@@ -87,7 +87,7 @@ class ItemList extends PureComponent {
         }
       }
     });
-  }
+  };
 
 
 
@@ -137,18 +137,19 @@ class ItemList extends PureComponent {
     } = this.props;
     const { keyno } = this.state;
     validateFieldsAndScroll((error, values) => {
-      const user = JSON.parse(localStorage.getItem("main_userinfo"));
-      const cargoname =  sessionStorage.getItem('cargoname');
+      // const user = JSON.parse(localStorage.getItem("main_userinfo"));
+      const cargonameC =  sessionStorage.getItem('cargoname');
+      const params =  {
+        ...values,
+        keyno,
+        cargonameC,
+      };
       if (!error) {
         // submit the values
         if(keyno !== null){
           dispatch({
             type: 'dict/updateItem',
-            payload: {
-              ...values,
-              keyno,
-              cargoname,
-            },
+            payload:params,
             callback: (response) => {
               if (response.code === 200) {
                 notification.open({
@@ -167,10 +168,7 @@ class ItemList extends PureComponent {
         }else {
           dispatch({
             type: 'dict/addItem',
-            payload: {
-              ...values,
-              cargoname,
-            },
+            payload: params,
             callback: (response) => {
               if (response.code === 200) {
                 notification.open({
@@ -192,6 +190,8 @@ class ItemList extends PureComponent {
   };
 
   showAdd = () => {
+    const{form} = this.props;
+    form.resetFields();
     this.setState( { keyno : null } ) ;
     this.setState( { visible : true } );
   };
@@ -238,7 +238,7 @@ class ItemList extends PureComponent {
           </div>
         </Card>
         <Modal
-            title="修改货物信息"
+            title="货物信息"
             visible={visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}

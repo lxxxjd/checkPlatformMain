@@ -1,4 +1,7 @@
-import {getCargos , searchCargos, updateCargo, addCargo, deleteCargo, getItemList, searchItemList , addItem, updateItem, deleteItem, getTestStandard, updateTestStandard, addTestStandard, deleteTestStandard} from '@/services/Cargodict'
+import {getCargos , searchCargos, updateCargo, addCargo, deleteCargo, getItemList, searchItemList ,
+  addItem, updateItem, deleteItem, getTestStandard, updateTestStandard, addTestStandard, deleteTestStandard,getCargoInfo} from '@/services/Cargodict'
+
+
 
 export default {
   namespace: 'dict',
@@ -18,6 +21,13 @@ export default {
       });
       if (callback) callback(response.data);
     },
+
+    *getCargoInfo({ payload,callback }, { call, put }) {
+      const response = yield call(getCargoInfo, payload);
+      if (callback) callback(response);
+    },
+
+
     *searchCargos({ payload,callback }, { call, put }) {
       const response = yield call(searchCargos, payload);
       yield put({

@@ -123,8 +123,7 @@ class StandardList extends PureComponent {
     } = this.props;
     const { keyno } = this.state;
     validateFieldsAndScroll((error, values) => {
-      const user = JSON.parse(localStorage.getItem("main_userinfo"));
-      const cargoname =  sessionStorage.getItem('cargoname');
+      const cargonameC =  sessionStorage.getItem('cargoname');
       const item =  sessionStorage.getItem('item');
       if (!error) {
         // submit the values
@@ -135,8 +134,7 @@ class StandardList extends PureComponent {
               ...values,
               keyno,
               item,
-              cargoname,
-              certcode:user.certCode,
+              cargonameC,
             },
             callback: (response) => {
               if (response.code === 200) {
@@ -158,9 +156,8 @@ class StandardList extends PureComponent {
             type: 'dict/addTestStandard',
             payload: {
               ...values,
-              cargoname,
+              cargonameC,
               item,
-              certcode:user.certCode,
             },
             callback: (response) => {
               if (response.code === 200) {
@@ -183,6 +180,8 @@ class StandardList extends PureComponent {
   };
 
   showAdd = () => {
+    const{form} = this.props;
+    form.resetFields();
     this.setState( { keyno : null } ) ;
     this.setState( { visible : true } );
   };
