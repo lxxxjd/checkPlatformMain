@@ -1,5 +1,6 @@
 import {getPreCompanyList,addPreCompany,updatePreCompany,deletePreCompany,createAccount,
-  getCompanyList,addCompany,updateCompany,deleteCompany,passPreCompany,nopassPreCompany,getManRecord,getUrl,getCompany,getParent,isExistCompanyBycertcode} from '@/services/company';
+  getCompanyList,addCompany,updateCompany,deleteCompany,passPreCompany,nopassPreCompany,
+  getManRecord,getUrl,getCompany,getParent,isExistCompanyBycertcode,initCNAS} from '@/services/company';
 import {getCNASCheckFourCertCodeListInfo} from '@/services/cnas';
 
 import {addDefaultProject} from '@/services/CheckProject';
@@ -22,6 +23,12 @@ export default {
     getCNASLevelFourListResult:{}, // 获得四级检查项目
   },
   effects: {
+
+
+    *initCNAS({ payload,callback }, { call, put }) {
+      const response = yield call(initCNAS, payload);
+      if (callback) callback(response);
+    },
 
 
     // 海关复制过来

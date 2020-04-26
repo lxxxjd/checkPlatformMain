@@ -111,6 +111,9 @@ export async function deleteCompany(params) {
 }
 
 
+export async function initCNAS(params) {
+  return request(`/api/CNASCheckFourCertCode/initCNAS?certCode=${params.certCode}`);
+}
 
 export async function getParent(params) {
   return request(`/api/company/getParent?certCode=${params.certCode}`);

@@ -257,11 +257,11 @@ class Company extends PureComponent {
       title: '电话',
       dataIndex: 'tel',
     },
-
-    {
-      title: '开户行',
-      dataIndex: 'bank',
-    },
+    //
+    // {
+    //   title: '开户行',
+    //   dataIndex: 'bank',
+    // },
 
     {
       title: '状态',
@@ -273,6 +273,7 @@ class Company extends PureComponent {
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.setInitSet(text, record)}>初始化</a>&nbsp;&nbsp;
+          <a onClick={() => this.initCNAS(text)}>CNAS初始化</a>&nbsp;&nbsp;
           <a onClick={() => this.setCNAS(text, record)}>CNAS项目</a>&nbsp;&nbsp;
           <a onClick={() => this.modifyItem(text, record)}>修改</a>&nbsp;&nbsp;
           <a onClick={() => this.deleteItem(text, record)}>删除</a>
@@ -289,6 +290,31 @@ class Company extends PureComponent {
     sessionStorage.setItem('goCNASCheckFourCertCodeListInfo_CertCode',text.certcode);
     router.push({
       pathname:'CNASCheckFourCertCode',
+    });
+  };
+
+  initCNAS =(text)=>{
+    const { dispatch } = this.props;
+    const params = {
+      certCode : text.certcode,
+    };
+    Modal.confirm({
+      title: '确定为CNAS初始化所有项目吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        dispatch({
+          type: 'company/initCNAS',
+          payload: params,
+          callback: (response) => {
+            if (response.code===200){
+              message.success("初始化CNAS项目成功");
+            }else{
+              message.error("初始化CNAS项目失败");
+            }
+          }
+        });
+      },
     });
   };
 
