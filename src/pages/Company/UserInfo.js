@@ -88,7 +88,6 @@ class UserInfo extends PureComponent {
 	    const {validateFieldsAndScroll} = form;
 	    let user = JSON.parse(localStorage.getItem("main_userinfo"));
 	    validateFieldsAndScroll((error, values) => {
-	    	console.log(error);
 	      if (!error) {
 	        // submit the values
 	        user.company = form.getFieldValue('company');

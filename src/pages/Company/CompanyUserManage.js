@@ -10,7 +10,7 @@ import {
   Input,
   Button,
   Select,
-  Table,
+  Table,Icon
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import moment from 'moment';
@@ -149,7 +149,7 @@ class CompanyUserManage extends PureComponent {
   };
 
   back = () =>{
-    this.props.history.goBack();
+    window.close();
   };
 
 
@@ -195,8 +195,8 @@ class CompanyUserManage extends PureComponent {
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
                 重置
               </Button>
-              <Button type="primary" style={{ marginLeft: 8 }} onClick={this.back}>
-                返回
+              <Button type="primary" style={{ marginLeft: 8 ,paddingLeft:0,paddingRight:15}} onClick={this.back}>
+                <Icon style={{paddingLeft:5}} type="close" />关闭
               </Button>
             </span>
           </Col>

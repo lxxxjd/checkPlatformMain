@@ -364,9 +364,7 @@ class PreCompany extends PureComponent {
       callback: (response) => {
         if(response==="success"){
           sessionStorage.setItem('companyusermanage_certcode',text.certcode);
-          router.push({
-            pathname:'/Company/CompanyUserManage',
-          });
+          window.open("/Company/CompanyUserManage");
         } else {
           Modal.error({
             title: '该公司不存在！',
@@ -388,9 +386,7 @@ class PreCompany extends PureComponent {
       callback: (response) => {
         if(response==="success"){
           sessionStorage.setItem('companyusermanage_certcode',text.certcode);
-          router.push({
-            pathname:'/Company/Intrusment',
-          });
+          window.open("/Company/Intrusment");
         } else {
           Modal.error({
             title: '该公司不存在！',
@@ -412,9 +408,7 @@ class PreCompany extends PureComponent {
       callback: (response) => {
         if(response==="success"){
           sessionStorage.setItem('companyusermanage_certcode',text.certcode);
-          router.push({
-            pathname:'/Company/CompanyInfo',
-          });
+          window.open("/Company/CompanyInfo");
         } else {
           Modal.error({
             title: '该公司不存在！',

@@ -267,7 +267,7 @@ class CompanyInfo extends PureComponent {
   };
 
   back = () =>{
-    this.props.history.goBack();
+    window.close();
   };
 
   render() {
@@ -285,8 +285,8 @@ class CompanyInfo extends PureComponent {
         <Row>
           <Col span={22} />
           <Col span={2}>
-            <Button type="primary" style={{ marginLeft: 8 }} onClick={this.back}>
-              返回
+            <Button type="primary" style={{ marginLeft: 8 ,paddingLeft:0,paddingRight:15}} onClick={this.back}>
+              <Icon style={{paddingLeft:5}} type="close" />关闭
             </Button>
           </Col>
         </Row>

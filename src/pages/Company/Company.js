@@ -272,11 +272,15 @@ class Company extends PureComponent {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.setInitSet(text, record)}>初始化</a>&nbsp;&nbsp;
-          <a onClick={() => this.initCNAS(text)}>CNAS初始化</a>&nbsp;&nbsp;
-          <a onClick={() => this.setCNAS(text, record)}>CNAS项目</a>&nbsp;&nbsp;
-          <a onClick={() => this.modifyItem(text, record)}>修改</a>&nbsp;&nbsp;
-          <a onClick={() => this.deleteItem(text, record)}>删除</a>
+          {text.status==='暂停'?[<a onClick={() => this.setStatus(text, record)}>开启&nbsp;&nbsp;</a>]:[<a onClick={() => this.setStatus(text, record)}>暂停&nbsp;&nbsp;</a>]}
+          <a onClick={() => this.setInitSet(text, record)}>初始化&nbsp;&nbsp;</a>
+          <a onClick={() => this.setCNAS(text, record)}>CNAS&nbsp;&nbsp;</a>
+          <a onClick={() => this.modifyItem(text, record)}>修改&nbsp;&nbsp;</a>
+          <a onClick={() => this.deleteItem(text, record)}>删除&nbsp;&nbsp;</a>
+          <br />
+          <a onClick={() => this.toUserInfo(text, record)}>人员信息&nbsp;&nbsp;</a>
+          <a onClick={() => this.toIntrusment(text, record)}>仪器设备&nbsp;&nbsp;</a>
+          <a onClick={() => this.toCompanyinfo(text, record)}>公司信息&nbsp;&nbsp;</a>
         </Fragment>
       ),
     },
@@ -293,30 +297,7 @@ class Company extends PureComponent {
     });
   };
 
-  initCNAS =(text)=>{
-    const { dispatch } = this.props;
-    const params = {
-      certCode : text.certcode,
-    };
-    Modal.confirm({
-      title: '确定为CNAS初始化所有项目吗？',
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => {
-        dispatch({
-          type: 'company/initCNAS',
-          payload: params,
-          callback: (response) => {
-            if (response.code===200){
-              message.success("初始化CNAS项目成功");
-            }else{
-              message.error("初始化CNAS项目失败");
-            }
-          }
-        });
-      },
-    });
-  };
+
 
   setInitSet =(text)=>{
     Modal.confirm({
@@ -351,6 +332,17 @@ class Company extends PureComponent {
             }
           }
         });
+        dispatch({
+          type: 'company/initCNAS',
+          payload: params,
+          callback: (response) => {
+            if (response.code===200){
+              message.success("初始化CNAS项目成功");
+            }else{
+              message.error("初始化CNAS项目失败");
+            }
+          }
+        });
       },
     });
 
@@ -367,6 +359,73 @@ class Company extends PureComponent {
       callback: (response) => {
         if (response){
           this.state.dataSource = response.data;
+        }
+      }
+    });
+  };
+
+
+  toUserInfo = text => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'company/isExistCompanyBycertcode',
+      payload:{certcode:text.certcode},
+      callback: (response) => {
+        if(response==="success"){
+          sessionStorage.setItem('companyusermanage_certcode',text.certcode);
+          window.open("/Company/CompanyUserManage");
+        } else {
+          Modal.error({
+            title: '该公司不存在！',
+            content:'该公司信息可能被删除！',
+            okText:"知道了",
+            onOk() {
+            },
+          });
+        }
+      }
+    });
+  };
+
+  toIntrusment = text => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'company/isExistCompanyBycertcode',
+      payload:{certcode:text.certcode},
+      callback: (response) => {
+        if(response==="success"){
+          sessionStorage.setItem('companyusermanage_certcode',text.certcode);
+          window.open("/Company/Intrusment");
+        } else {
+          Modal.error({
+            title: '该公司不存在！',
+            content:'该公司信息可能被删除！',
+            okText:"知道了",
+            onOk() {
+            },
+          });
+        }
+      }
+    });
+  };
+
+  toCompanyinfo = text => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'company/isExistCompanyBycertcode',
+      payload:{certcode:text.certcode},
+      callback: (response) => {
+        if(response==="success"){
+          sessionStorage.setItem('companyusermanage_certcode',text.certcode);
+          window.open("/Company/CompanyInfo");
+        } else {
+          Modal.error({
+            title: '该公司不存在！',
+            content:'该公司信息可能被删除！',
+            okText:"知道了",
+            onOk() {
+            },
+          });
         }
       }
     });
@@ -397,14 +456,14 @@ class Company extends PureComponent {
         }
       });
     });
-  }
+  };
 
   isValidDate =date=> {
     if(date !==undefined && date !==null ){
       return <span>{moment(date).format('YYYY-MM-DD')}</span>;
     }
     return [];
-  }
+  };
 
   modifyItem = text => {
     this.setState({
@@ -413,27 +472,66 @@ class Company extends PureComponent {
     this.handleModalVisible(true);
   };
 
+  setStatus = text => {
+    const { dispatch } = this.props;
+    Modal.confirm({
+      title: '确定修改公司使用状态吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        let prams = text;
+        if(prams.status !=="暂停"){
+          prams.status =  '暂停';
+        }else{
+          prams.status =  '审核通过';
+        }
+        const values = {
+          ...prams
+        };
+        dispatch({
+          type: 'company/updateCompany',
+          payload:values,
+          callback: (response) => {
+            if(response==="success"){
+              message.success("保存成功");
+              this.init();
+            } else {
+              message.success("保存失败");
+            }
+          }
+        });
+      }
+    });
+  };
+
 
 
 
   deleteItem = text =>{
     const { dispatch } = this.props;
-    const values = {
-      ...text
-    };
-    dispatch({
-      type: 'company/deleteCompany',
-      payload:values,
-      callback: (response) => {
-        if(response==="success"){
-          this.init();
-          message.success("删除成功");
-        } else{
-          message.success("删除失败");
-        }
+    Modal.confirm({
+      title: '确定删除吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        const values = {
+          ...text
+        };
+        dispatch({
+          type: 'company/deleteCompany',
+          payload:values,
+          callback: (response) => {
+            if(response==="success"){
+              this.init();
+              message.success("删除成功");
+            } else{
+              message.success("删除失败");
+            }
+          }
+        });
       }
     });
-  }
+  };
 
 
   addItem = () => {
@@ -483,7 +581,7 @@ class Company extends PureComponent {
     this.setState({
       modalVisible: false,
     });
-  }
+  };
 
   handleAdd = (fields) => {
     const { dispatch } = this.props;
@@ -505,8 +603,7 @@ class Company extends PureComponent {
     this.setState({
       addModalVisible: false,
     });
-
-  }
+  };
 
 
 
